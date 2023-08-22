@@ -1,12 +1,12 @@
 import { faker } from '@faker-js/faker'
 // import { promiseHash } from 'remix-utils'
 import { prisma } from '#app/utils/db.server.ts'
+import { downloadFile } from '#app/utils/misc.tsx'
 import {
 	createPassword,
 	createUser,
 	getNoteImages,
 	getUserImages,
-	// img,
 } from '#tests/db-utils.ts'
 
 async function seed() {
@@ -266,6 +266,17 @@ async function seed() {
 							'Koalas are found in the eucalyptus forests of eastern Australia. They have grey fur with a cream-coloured chest, and strong, clawed feet, perfect for living in the branches of trees!',
 					},
 				],
+			},
+			image: {
+				create: {
+					altText: 'foto Bjorn Brassé',
+					contentType: 'image/jpeg',
+					blob: (
+						await downloadFile(
+							'https://www.etz.nl/ETZWebsite/media/ETZ/Behandelaars/brasse-ziekenhuisapotheker-web.jpg?ext=.jpg',
+						)
+					).blob,
+				},
 			},
 		},
 	})
