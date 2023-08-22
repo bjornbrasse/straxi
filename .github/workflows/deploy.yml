@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-      - dev
+      - staging
   pull_request: {}
 
 concurrency:
@@ -142,8 +142,8 @@ jobs:
     needs: [lint, typecheck, vitest, playwright]
     # only build/deploy main branch on pushes
     if:
-      ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev') &&
-      github.event_name == 'push' }}
+      ${{ (github.ref == 'refs/heads/main' || github.ref ==
+      'refs/heads/staging') && github.event_name == 'push' }}
 
     steps:
       - name: ⬇️ Checkout repo
@@ -166,7 +166,7 @@ jobs:
         uses: superfly/flyctl-actions/setup-flyctl@v1.4
 
       - name: 🚀 Deploy Staging
-        if: ${{ github.ref == 'refs/heads/dev' }}
+        if: ${{ github.ref == 'refs/heads/staging' }}
         run:
           flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }}
           --app ${{ steps.app_name.outputs.value }}-staging
