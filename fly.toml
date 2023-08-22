@@ -1,4 +1,4 @@
-app = "straxi-b0ae"
+app = "straxi"
 primary_region = "ams"
 kill_signal = "SIGINT"
 kill_timeout = 5
