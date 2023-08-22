@@ -1,4 +1,4 @@
-import { useForm } from '@conform-to/react'
+// import { useForm } from '@conform-to/react'
 import { parse } from '@conform-to/zod'
 import { cssBundleHref } from '@remix-run/css-bundle'
 import {
@@ -17,7 +17,7 @@ import {
 	Outlet,
 	Scripts,
 	ScrollRestoration,
-	useFetcher,
+	// useFetcher,
 	useFetchers,
 	useLoaderData,
 	useMatches,
@@ -26,9 +26,9 @@ import {
 import { withSentry } from '@sentry/remix'
 import { Suspense, lazy, useRef } from 'react'
 import { z } from 'zod'
-import { Confetti } from './components/confetti.tsx'
+// import { Confetti } from './components/confetti.tsx'
 import { GeneralErrorBoundary } from './components/error-boundary.tsx'
-import { ErrorList } from './components/forms.tsx'
+// import { ErrorList } from './components/forms.tsx'
 import { SearchBar } from './components/search-bar.tsx'
 import { EpicToaster } from './components/toaster.tsx'
 import { Button } from './components/ui/button.tsx'
@@ -247,11 +247,10 @@ function App() {
 	return (
 		<Document nonce={nonce} theme={theme} env={data.ENV}>
 			<div className="flex h-screen flex-col justify-between">
-				<header className="container py-6">
+				<header className="container py-1.5">
 					<nav className="flex items-center justify-between">
-						<Link to="/">
-							<div className="font-light">epic</div>
-							<div className="font-bold">notes</div>
+						<Link to="/" className="mt-1 text-4xl font-extrabold text-pink-800">
+							STRAXI
 						</Link>
 						{isOnSearchPage ? null : (
 							<div className="ml-auto max-w-sm flex-1 pr-10">
@@ -274,15 +273,15 @@ function App() {
 					<Outlet />
 				</div>
 
-				<div className="container flex justify-between pb-5">
+				{/* <div className="container flex justify-between pb-5">
 					<Link to="/">
 						<div className="font-light">epic</div>
 						<div className="font-bold">notes</div>
 					</Link>
 					<ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
-				</div>
+				</div> */}
 			</div>
-			<Confetti id={data.confettiId} />
+			{/* <Confetti id={data.confettiId} /> */}
 			<EpicToaster toast={data.toast} />
 			{RemixDevTools ? (
 				<Suspense>
@@ -395,56 +394,56 @@ export function useOptimisticThemeMode() {
 	}
 }
 
-function ThemeSwitch({ userPreference }: { userPreference?: Theme | null }) {
-	const fetcher = useFetcher<typeof action>()
+// function ThemeSwitch({ userPreference }: { userPreference?: Theme | null }) {
+// 	const fetcher = useFetcher<typeof action>()
 
-	const [form] = useForm({
-		id: 'theme-switch',
-		lastSubmission: fetcher.data?.submission,
-		onValidate({ formData }) {
-			return parse(formData, { schema: ThemeFormSchema })
-		},
-	})
+// 	const [form] = useForm({
+// 		id: 'theme-switch',
+// 		lastSubmission: fetcher.data?.submission,
+// 		onValidate({ formData }) {
+// 			return parse(formData, { schema: ThemeFormSchema })
+// 		},
+// 	})
 
-	const optimisticMode = useOptimisticThemeMode()
-	const mode = optimisticMode ?? userPreference ?? 'system'
-	const nextMode =
-		mode === 'system' ? 'light' : mode === 'light' ? 'dark' : 'system'
-	const modeLabel = {
-		light: (
-			<Icon name="sun">
-				<span className="sr-only">Light</span>
-			</Icon>
-		),
-		dark: (
-			<Icon name="moon">
-				<span className="sr-only">Dark</span>
-			</Icon>
-		),
-		system: (
-			<Icon name="laptop">
-				<span className="sr-only">System</span>
-			</Icon>
-		),
-	}
+// 	const optimisticMode = useOptimisticThemeMode()
+// 	const mode = optimisticMode ?? userPreference ?? 'system'
+// 	const nextMode =
+// 		mode === 'system' ? 'light' : mode === 'light' ? 'dark' : 'system'
+// 	const modeLabel = {
+// 		light: (
+// 			<Icon name="sun">
+// 				<span className="sr-only">Light</span>
+// 			</Icon>
+// 		),
+// 		dark: (
+// 			<Icon name="moon">
+// 				<span className="sr-only">Dark</span>
+// 			</Icon>
+// 		),
+// 		system: (
+// 			<Icon name="laptop">
+// 				<span className="sr-only">System</span>
+// 			</Icon>
+// 		),
+// 	}
 
-	return (
-		<fetcher.Form method="POST" {...form.props}>
-			<input type="hidden" name="theme" value={nextMode} />
-			<div className="flex gap-2">
-				<button
-					name="intent"
-					value="update-theme"
-					type="submit"
-					className="flex h-8 w-8 cursor-pointer items-center justify-center"
-				>
-					{modeLabel[mode]}
-				</button>
-			</div>
-			<ErrorList errors={form.errors} id={form.errorId} />
-		</fetcher.Form>
-	)
-}
+// 	return (
+// 		<fetcher.Form method="POST" {...form.props}>
+// 			<input type="hidden" name="theme" value={nextMode} />
+// 			<div className="flex gap-2">
+// 				<button
+// 					name="intent"
+// 					value="update-theme"
+// 					type="submit"
+// 					className="flex h-8 w-8 cursor-pointer items-center justify-center"
+// 				>
+// 					{modeLabel[mode]}
+// 				</button>
+// 			</div>
+// 			<ErrorList errors={form.errors} id={form.errorId} />
+// 		</fetcher.Form>
+// 	)
+// }
 
 export function ErrorBoundary() {
 	// the nonce doesn't rely on the loader so we can access that

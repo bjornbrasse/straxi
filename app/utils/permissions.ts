@@ -3,6 +3,11 @@ import { requireUserId } from './auth.server.ts'
 import { prisma } from './db.server.ts'
 import { type useUser } from './user.ts'
 
+type Action = 'create' | 'read' | 'update' | 'delete'
+type Entity = 'user' | 'note'
+type Access = 'own' | 'any' | 'own,any' | 'any,own'
+type PermissionString = `${Action}:${Entity}` | `${Action}:${Entity}:${Access}`
+
 export async function requireUserWithPermission(
 	request: Request,
 	permission: PermissionString,
@@ -59,10 +64,6 @@ export async function requireUserWithRole(request: Request, name: string) {
 	return user.id
 }
 
-type Action = 'create' | 'read' | 'update' | 'delete'
-type Entity = 'user' | 'note'
-type Access = 'own' | 'any' | 'own,any' | 'any,own'
-type PermissionString = `${Action}:${Entity}` | `${Action}:${Entity}:${Access}`
 function parsePermissionString(permissionString: PermissionString) {
 	const [action, entity, access] = permissionString.split(':') as [
 		Action,
