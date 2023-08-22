@@ -1,12 +1,12 @@
 import { faker } from '@faker-js/faker'
-import { promiseHash } from 'remix-utils'
+// import { promiseHash } from 'remix-utils'
 import { prisma } from '#app/utils/db.server.ts'
 import {
 	createPassword,
 	createUser,
 	getNoteImages,
 	getUserImages,
-	img,
+	// img,
 } from '#tests/db-utils.ts'
 
 async function seed() {
@@ -96,7 +96,7 @@ async function seed() {
 					},
 				},
 			})
-			.catch(e => {
+			.catch((e: any) => {
 				console.error('Error creating a user:', e)
 				return null
 			})
