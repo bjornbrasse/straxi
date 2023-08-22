@@ -10,6 +10,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Appointment {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   User     @relation(fields: [createdById], references: [id])
+  createdById String
+
+  start     DateTime
+  end       DateTime
+  meeting   Meeting? @relation(fields: [meetingId], references: [id])
+  meetingId String?
+  subject   String?
+
+  name String
+}
+
+model Meeting {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   User     @relation(fields: [createdById], references: [id])
+  createdById String
+
+  name String
+
+  appointments Appointment[]
+}
+
 model User {
   id       String  @id @default(cuid())
   email    String  @unique
@@ -25,6 +53,9 @@ model User {
   roles       Role[]
   sessions    Session[]
   connections Connection[]
+
+  meetingsCreated     Meeting[]
+  appointmentsCreated Appointment[]
 }
 
 model Note {

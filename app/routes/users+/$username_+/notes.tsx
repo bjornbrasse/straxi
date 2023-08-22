@@ -48,7 +48,7 @@ export default function NotesRoute() {
 								{ownerDisplayName}'s Notes
 							</h1>
 						</Link>
-						<ul className="overflow-y-auto overflow-x-hidden pb-12">
+						<ul className="overflow-y-auto overflow-x-hidden border border-blue-300 pb-12">
 							{isOwner ? (
 								<li className="p-1 pr-0">
 									<NavLink
