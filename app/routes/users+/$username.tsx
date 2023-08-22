@@ -66,13 +66,13 @@ export default function ProfileRoute() {
 									Edit profile
 								</Link>
 							</Button>
-							<Form action="/logout" method="POST">
+							{/* <Form action="/logout" method="POST">
 								<Button type="submit" variant="default" size="default">
 									<Icon name="exit" className="scale-125 max-md:scale-150">
 										Logout
 									</Icon>
 								</Button>
-							</Form>
+							</Form> */}
 						</div>
 					)}
 				</div>
@@ -105,7 +105,7 @@ export default function ProfileRoute() {
 							</div>
 							<RadixDialog.Close asChild>
 								<button
-									className="text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute right-[10px] top-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
+									className="absolute right-[10px] top-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full text-indigo-700 hover:bg-indigo-300 focus:shadow-[0_0_0_2px] focus:shadow-indigo-300 focus:outline-none"
 									aria-label="Close"
 								>
 									<Icon name="cross-1" />
@@ -114,6 +114,17 @@ export default function ProfileRoute() {
 						</RadixDialog.Content>
 					</RadixDialog.Portal>
 				</RadixDialog.Root>
+			</div>
+			<div className="border-4 border-red-500">
+				{isLoggedInUser ? (
+					<Form action="/logout" method="POST" className="mt-3">
+						<Button type="submit" variant="link" size="pill">
+							<Icon name="exit" className="scale-125 max-md:scale-150">
+								Logout
+							</Icon>
+						</Button>
+					</Form>
+				) : null}
 			</div>
 			<Outlet />
 		</div>

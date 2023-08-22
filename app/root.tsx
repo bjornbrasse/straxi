@@ -297,6 +297,7 @@ function UserDropdown() {
 	const user = useUser()
 	const submit = useSubmit()
 	const formRef = useRef<HTMLFormElement>(null)
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
