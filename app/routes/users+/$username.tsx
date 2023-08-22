@@ -1,7 +1,7 @@
 import * as RadixDialog from '@radix-ui/react-dialog'
 import { json, type DataFunctionArgs } from '@remix-run/node'
 import {
-	Form,
+	// Form,
 	Link,
 	Outlet,
 	useLoaderData,
@@ -116,7 +116,7 @@ export default function ProfileRoute() {
 				</RadixDialog.Root>
 			</div>
 			<div className="border-4 border-red-500">
-				{isLoggedInUser ? (
+				{/* {isLoggedInUser ? (
 					<Form action="/logout" method="POST" className="mt-3">
 						<Button type="submit" variant="link" size="pill">
 							<Icon name="exit" className="scale-125 max-md:scale-150">
@@ -124,7 +124,7 @@ export default function ProfileRoute() {
 							</Icon>
 						</Button>
 					</Form>
-				) : null}
+				) : null} */}
 			</div>
 			<Outlet />
 		</div>
