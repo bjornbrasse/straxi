@@ -352,8 +352,7 @@ function UserDropdown() {
 					>
 						<Form action="/logout" method="POST" ref={formRef}>
 							<Icon className="text-body-md" name="exit">
-								{/* <button type="submit">Logout</button> */}
-								<button type="submit">Log me out</button>
+								<button type="submit">Logout</button>
 							</Icon>
 						</Form>
 					</DropdownMenuItem>

@@ -88,9 +88,14 @@ test('onboarding with link', async ({ page }) => {
 
 	await expect(page).toHaveURL(`/users/${onboardingData.username}`)
 
-	await page.getByRole('link', { name: onboardingData.name }).click()
-	// await page.getByRole('menuitem', { name: /logout/i }).click()
-	await page.getByText(/log me out/i).click
+	// await page.getByRole('link', { name: onboardingData.name }).click()
+	// await page.getByLabel(onboardingData.name).click()
+	await page
+		.getByRole('link', {
+			name: `${onboardingData.name} ${onboardingData.name}`, // TODO: maken, hier zou geen dubbele naam nodig moeten zijn... Of komt het door 'link'?
+		})
+		.click()
+	await page.getByRole('menuitem', { name: /logout/i }).click()
 	await expect(page).toHaveURL(`/`)
 })
 

@@ -56,7 +56,7 @@ export default function ProfileRoute() {
 				</Link>
 				<div className="flex justify-between">
 					<div className="flex flex-col">
-						<h1>{data.user.name}</h1>
+						<h1>Hahaha {data.user.name}</h1>
 						<p className="text-gray-400">Lid sinds: {data.userJoinedDisplay}</p>
 					</div>
 					{isLoggedInUser && (
@@ -115,8 +115,8 @@ export default function ProfileRoute() {
 					</RadixDialog.Portal>
 				</RadixDialog.Root>
 			</div>
-			<div className="border-4 border-red-500">
-				{/* {isLoggedInUser ? (
+			{/* <div className="border-4 border-red-500">
+				{isLoggedInUser ? (
 					<Form action="/logout" method="POST" className="mt-3">
 						<Button type="submit" variant="link" size="pill">
 							<Icon name="exit" className="scale-125 max-md:scale-150">
@@ -124,8 +124,8 @@ export default function ProfileRoute() {
 							</Icon>
 						</Button>
 					</Form>
-				) : null} */}
-			</div>
+				) : null}
+			</div> */}
 			<Outlet />
 		</div>
 	)
