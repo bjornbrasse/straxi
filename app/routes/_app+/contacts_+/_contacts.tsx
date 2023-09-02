@@ -49,7 +49,7 @@ export default function UsersRoute() {
 				)}
 			</div>
 			{contactId && (
-				<div className="flex-2 flex border-2 border-emerald-500">
+				<div className="flex-1">
 					<Outlet />
 				</div>
 			)}

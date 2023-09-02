@@ -1,9 +1,10 @@
 import { json, type DataFunctionArgs } from '@remix-run/node'
-import { useLoaderData, type V2_MetaFunction } from '@remix-run/react'
+import { Link, useLoaderData, type V2_MetaFunction } from '@remix-run/react'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
 import { requireUserId } from '#app/utils/auth.server.ts'
 import { prisma } from '#app/utils/db.server.ts'
 import { invariantResponse } from '#app/utils/misc.tsx'
+import { Icon } from '#app/components/ui/icon.tsx'
 
 export async function loader({ params, request }: DataFunctionArgs) {
 	await requireUserId(request)
@@ -31,8 +32,11 @@ export default function ContactRoute() {
 	const data = useLoaderData<typeof loader>()
 
 	return (
-		<div className="h-full border-2 border-pink-700">
-			<h1>Contact {data.user.name}</h1>
+		<div className="flex h-full justify-between border-2 border-pink-700 px-4 py-1">
+			<h3>{data.user.name}</h3>
+			<Link to="/contacts">
+				<Icon name="cross-1" />
+			</Link>
 		</div>
 	)
 }
