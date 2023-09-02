@@ -20,7 +20,7 @@ import {
 	// useFetcher,
 	useFetchers,
 	useLoaderData,
-	useMatches,
+	// useMatches,
 	useSubmit,
 } from '@remix-run/react'
 import { withSentry } from '@sentry/remix'
@@ -29,7 +29,7 @@ import { z } from 'zod'
 // import { Confetti } from './components/confetti.tsx'
 import { GeneralErrorBoundary } from './components/error-boundary.tsx'
 // import { ErrorList } from './components/forms.tsx'
-import { SearchBar } from './components/search-bar.tsx'
+// import { SearchBar } from './components/search-bar.tsx'
 import { EpicToaster } from './components/toaster.tsx'
 import { Button } from './components/ui/button.tsx'
 import {
@@ -241,22 +241,26 @@ function App() {
 	const nonce = useNonce()
 	const user = useOptionalUser()
 	const theme = useTheme()
-	const matches = useMatches()
-	const isOnSearchPage = matches.find(m => m.id === 'routes/users+/index')
+	// const matches = useMatches()
+	// const isOnSearchPage = matches.find(m => m.id === 'routes/users+/index')
 
 	return (
 		<Document nonce={nonce} theme={theme} env={data.ENV}>
 			<div className="flex h-screen flex-col justify-between">
-				<header className="container py-1.5">
+				<header className="bg-indigo-100 py-2 pl-4 pr-2 sm:container sm:p-0">
 					<nav className="flex items-center justify-between">
-						<Link to="/" className="mt-1 text-4xl font-extrabold text-pink-800">
-							STRAXI
+						<Link
+							to="/"
+							className="mt-1 text-4xl font-extrabold text-indigo-800"
+						>
+							<span className="hidden sm:inline">STRAXI</span>
+							<span className="sm:hidden">S</span>
 						</Link>
-						{isOnSearchPage ? null : (
+						{/* {isOnSearchPage ? null : (
 							<div className="ml-auto max-w-sm flex-1 pr-10">
 								<SearchBar status="idle" />
 							</div>
-						)}
+						)} */}
 						<div className="flex items-center gap-10">
 							{user ? (
 								<UserDropdown />

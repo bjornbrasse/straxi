@@ -17,6 +17,7 @@
     "fly:proxy": "fly proxy 5556:5555 --app straxi",
     "fly:ssh": "fly ssh console -C \"npm run prisma:studio\" --app straxi",
     "format": "prettier --write .",
+    "icon": "npx sly add @radix-ui/icons",
     "lint": "eslint .",
     "prisma:push": "prisma db push",
     "prisma:seed": "prisma db seed",
