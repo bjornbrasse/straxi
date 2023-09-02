@@ -28,7 +28,7 @@ export async function action({ request }: DataFunctionArgs) {
 
 		cookieSession.set('tabs', JSON.stringify([{ ...data }]))
 
-		return redirect(`/meetings/${'cllmdbars0001yvugxn709upw'}`, {
+		return redirect(`/meeting/${data.id}`, {
 			headers: {
 				'set-cookie': await sessionStorage.commitSession(cookieSession),
 			},

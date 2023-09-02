@@ -1,6 +1,6 @@
-import { cn } from '#app/utils/misc.tsx'
 import * as RadixDialog from '@radix-ui/react-dialog'
 import { type ReactNode } from 'react'
+import { cn } from '#app/utils/misc.tsx'
 
 export function Dialog({
 	children,

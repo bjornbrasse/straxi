@@ -1,38 +1,26 @@
-import { type DataFunctionArgs, json } from '@remix-run/node'
+import { type DataFunctionArgs, json, redirect } from '@remix-run/node'
 import {
 	NavLink,
 	Outlet,
 	type V2_MetaFunction,
 	useLoaderData,
+	Link,
 } from '@remix-run/react'
-import { Tab } from '#app/components/tab.tsx'
 import { Icon, type IconName } from '#app/components/ui/icon.tsx'
+import { prisma } from '#app/utils/db.server.ts'
 import { cn } from '#app/utils/misc.tsx'
-import { sessionStorage } from '#app/utils/session.server.ts'
 import { useOptionalUser } from '#app/utils/user.ts'
 
-export async function loader({ request }: DataFunctionArgs) {
-	const cookieSession = await sessionStorage.getSession(
-		request.headers.get('cookie'),
-	)
-
-	const tabs = (JSON.parse(String(cookieSession.get('tabs') ?? null)) ||
-		[]) as Array<{
-		name: string
-		id: string
-	}>
-
-	return json(
-		{ tabs },
-		{
-			headers: {
-				'set-cookie': await sessionStorage.commitSession(cookieSession),
-			},
-		},
-	)
+export async function loader({ params }: DataFunctionArgs) {
+	const meeting = await prisma.meeting.findUnique({
+		where: { id: params.meetingId },
+		select: { id: true, name: true },
+	})
+	if (!meeting) return redirect('/meetings')
+	return json({ meeting })
 }
 
-export default function AppLayout() {
+export default function MeetingLayout() {
 	const data = useLoaderData<typeof loader>()
 	const user = useOptionalUser()
 
@@ -40,25 +28,23 @@ export default function AppLayout() {
 		<>
 			{user ? (
 				<div className="flex h-full flex-col overflow-hidden">
-					<div className="hidden h-12 items-end gap-1 bg-gray-400 sm:flex">
-						{data.tabs.map(tab => (
-							<Tab tab={tab} key={tab.id} />
-						))}
+					<div className="bg-gray-400 p-4">
+						<Link to="/meetings">
+							<Icon name="arrow-left" />
+						</Link>
+						<span>{data.meeting?.name}</span>
 					</div>
 					<div className="flex h-full flex-1 flex-col sm:flex-row">
 						<div
 							id="tabs"
-							className="flex w-full flex-row gap-1.5 border-b border-indigo-800 px-4 pt-2 sm:w-48 sm:flex-col"
+							className="flex w-full flex-row gap-1 border-b border-indigo-800 bg-red-400 px-2 pt-2 sm:w-48 sm:flex-col"
 						>
-							<NavTab caption="Calendar" iconName="calendar" to="/calendar" />
-							<NavTab caption="Taken" iconName="lightning-bolt" to="/tasks" />
-							<NavTab caption="Taken" iconName="tag" to="/tags" />
-							<NavTab caption="Gebruikers" iconName="person" to="/contacts" />
 							<NavTab
-								caption="Vergaderingen"
-								iconName="chat-bubble"
-								to="/meetings"
+								caption="Afpsraken"
+								iconName="calendar"
+								to="appointments"
 							/>
+							<NavTab caption="Taken" iconName="lightning-bolt" to="tasks" />
 						</div>
 						<div className="flex-1 overflow-auto">
 							<Outlet />
