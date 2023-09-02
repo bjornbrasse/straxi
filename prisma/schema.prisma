@@ -38,26 +38,6 @@ model Meeting {
   appointments Appointment[]
 }
 
-model User {
-  id       String  @id @default(cuid())
-  email    String  @unique
-  username String  @unique
-  name     String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  image       UserImage?
-  password    Password?
-  notes       Note[]
-  roles       Role[]
-  sessions    Session[]
-  connections Connection[]
-
-  meetingsCreated     Meeting[]
-  appointmentsCreated Appointment[]
-}
-
 model Note {
   id      String @id @default(cuid())
   title   String
@@ -91,6 +71,40 @@ model NoteImage {
 
   // non-unique foreign key
   @@index([noteId])
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  createdBy   User     @relation(fields: [createdById], references: [id])
+  createdById String
+  updatedAt   DateTime @updatedAt
+
+  name        String
+  start       DateTime  @default(now())
+  end         DateTime?
+  description String
+}
+
+model User {
+  id       String  @id @default(cuid())
+  email    String  @unique
+  username String  @unique
+  name     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  image       UserImage?
+  password    Password?
+  notes       Note[]
+  roles       Role[]
+  sessions    Session[]
+  connections Connection[]
+
+  meetingsCreated     Meeting[]
+  appointmentsCreated Appointment[]
+  tasksCreated        Task[]
 }
 
 model UserImage {

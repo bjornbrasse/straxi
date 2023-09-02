@@ -43,15 +43,19 @@ export default function AppLayout() {
 					<div className="flex h-full flex-1 flex-col sm:flex-row">
 						<div
 							id="tabs"
-							className="flex w-full flex-row gap-1 border-b border-indigo-800 px-2 pt-2 sm:w-48 sm:flex-col"
+							className="flex w-full flex-row justify-between border-b border-indigo-800 px-2 pt-2 sm:w-48 sm:flex-col"
 						>
-							<NavTab caption="Calendar" iconName="calendar" to="/" />
-							<NavTab caption="Gebruikers" iconName={'download'} to="/users" />
-							<NavTab
-								caption="Vergaderingen"
-								iconName="avatar"
-								to="/meetings"
-							/>
+							<div className="flex gap-1">
+								<NavTab caption="Calendar" iconName="calendar" to="/" />
+								<NavTab caption="Taken" iconName="lightning-bolt" to="/tasks" />
+								<NavTab caption="Gebruikers" iconName="person" to="/users" />
+								<NavTab
+									caption="Vergaderingen"
+									iconName="chat-bubble"
+									to="/meetings"
+								/>
+							</div>
+							<NavTab caption="Profiel" iconName="avatar" to="/me" />
 						</div>
 						<div className="flex-1 overflow-auto">
 							<Outlet />

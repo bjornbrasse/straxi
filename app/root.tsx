@@ -60,11 +60,6 @@ import { makeTimings, time } from './utils/timing.server.ts'
 import { getToast } from './utils/toast.server.ts'
 import { useOptionalUser, useUser } from './utils/user.ts'
 
-const RemixDevTools =
-	process.env.NODE_ENV === 'development'
-		? lazy(() => import('remix-development-tools'))
-		: null
-
 export const links: LinksFunction = () => {
 	return [
 		// Preload svg sprite as a resource to avoid render blocking
@@ -247,14 +242,13 @@ function App() {
 	return (
 		<Document nonce={nonce} theme={theme} env={data.ENV}>
 			<div className="flex h-screen flex-col justify-between">
-				<header className="bg-indigo-100 py-2 pl-4 pr-2 sm:container sm:p-0">
+				<header className="bg-indigo-100 py-2 pl-4 pr-2 sm:container">
 					<nav className="flex items-center justify-between">
 						<Link
 							to="/"
 							className="mt-1 text-4xl font-extrabold text-indigo-800"
 						>
-							<span className="hidden sm:inline">STRAXI</span>
-							<span className="sm:hidden">S</span>
+							STRAXI
 						</Link>
 						{/* {isOnSearchPage ? null : (
 							<div className="ml-auto max-w-sm flex-1 pr-10">
@@ -287,11 +281,6 @@ function App() {
 			</div>
 			{/* <Confetti id={data.confettiId} /> */}
 			<EpicToaster toast={data.toast} />
-			{RemixDevTools ? (
-				<Suspense>
-					<RemixDevTools />
-				</Suspense>
-			) : null}
 		</Document>
 	)
 }
@@ -317,14 +306,14 @@ function UserDropdown() {
 							alt={user.name ?? user.username}
 							src={getUserImgSrc(user.image?.id)}
 						/>
-						<span className="text-body-sm font-bold">
+						<span className="hidden text-body-sm font-bold sm:inline">
 							{user.name ?? user.username}
 						</span>
 					</Link>
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuPortal>
-				<DropdownMenuContent sideOffset={8} align="start">
+				<DropdownMenuContent sideOffset={4} align="end">
 					<DropdownMenuItem asChild>
 						<Link prefetch="intent" to={`/meetings`}>
 							<Icon className="text-body-md" name="chat-bubble">
