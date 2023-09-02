@@ -24,6 +24,31 @@ model Appointment {
   subject   String?
 }
 
+model Contact {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  createdBy   User     @relation(fields: [createdById], references: [id])
+  createdById String
+  updatedAt   DateTime @updatedAt
+
+  firstName String
+  lastName  String
+  emails    ContactEmail[]
+  birthday  DateTime?
+  // image       UserImage?
+}
+
+model ContactEmail {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  email String
+
+  contact   Contact @relation(fields: [contactId], references: [id])
+  contactId String
+}
+
 model Meeting {
   id          String   @id @default(cuid())
   createdAt   DateTime @default(now())
@@ -103,6 +128,7 @@ model User {
   meetingsCreated     Meeting[]
   appointmentsCreated Appointment[]
   tasksCreated        Task[]
+  Contact             Contact[]
 }
 
 model UserImage {

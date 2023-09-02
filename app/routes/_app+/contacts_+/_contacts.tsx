@@ -1,12 +1,18 @@
 import { type DataFunctionArgs } from '@remix-run/node'
-import { NavLink, Outlet, useLoaderData, useParams } from '@remix-run/react'
+import {
+	Link,
+	NavLink,
+	Outlet,
+	useLoaderData,
+	useParams,
+} from '@remix-run/react'
 import { promiseHash } from 'remix-utils'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
+import { Button } from '#app/components/ui/button.tsx'
+import { Icon } from '#app/components/ui/icon.tsx'
 import { requireUserId } from '#app/utils/auth.server.ts'
 import { prisma } from '#app/utils/db.server.ts'
 import { cn } from '#app/utils/misc.tsx'
-import { Button } from '#app/components/ui/button.tsx'
-import { Icon } from '#app/components/ui/icon.tsx'
 
 export async function loader({ request }: DataFunctionArgs) {
 	await requireUserId(request)
@@ -43,8 +49,11 @@ export default function UsersRoute() {
 					<Button
 						variant="fab"
 						className="h-14 w-14 rounded-full text-2xl font-bold"
+						asChild
 					>
-						<Icon name="plus" />
+						<Link to="new">
+							<Icon name="plus" />
+						</Link>
 					</Button>
 				)}
 			</div>
