@@ -1,6 +1,9 @@
 import { redirect, type DataFunctionArgs, json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
+import { Dialog } from '#app/components/ui/dialog.tsx'
+import { Icon } from '#app/components/ui/icon.tsx'
 import { requireUserId } from '#app/utils/auth.server.ts'
+import { AppointmentEditor } from './__appointment-editor.tsx'
 
 export async function loader({ request }: DataFunctionArgs) {
 	await requireUserId(request)
@@ -62,10 +65,25 @@ export default function Index() {
 				<p>{date}</p>
 			</div>
 			<div className="flex h-full flex-1 flex-col">
-				<section className="flex-1 border border-red-400">
-					<h2>Afspraken</h2>
+				<section className="flex-1">
+					<div className="flex items-center justify-between bg-gray-300 px-4 py-1.5 text-xl font-bold text-indigo-800">
+						<h2>Afspraken</h2>
+						<Dialog>
+							<Dialog.Trigger className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-white">
+								<Icon name="plus" />
+							</Dialog.Trigger>
+							<Dialog.Content className="rounded-lg">
+								{/* <Dialog.Close>
+									<Button variant="outline" color="gray">
+										Cancel
+									</Button>
+								</Dialog.Close> */}
+								<AppointmentEditor />
+							</Dialog.Content>
+						</Dialog>
+					</div>
 				</section>
-				<section className="flex-1 border border-blue-400">
+				<section className="flex-1">
 					<div className="justify-between bg-gray-300 px-4 py-1.5 text-xl font-bold text-indigo-800">
 						<h2>Taken</h2>
 					</div>

@@ -13,17 +13,15 @@ datasource db {
 model Appointment {
   id          String   @id @default(cuid())
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  createdBy   User     @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  createdBy   User     @relation(fields: [createdById], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdById String
+  updatedAt   DateTime @updatedAt
 
-  start     DateTime
   end       DateTime
   meeting   Meeting? @relation(fields: [meetingId], references: [id])
   meetingId String?
+  start     DateTime
   subject   String?
-
-  name String
 }
 
 model Meeting {
