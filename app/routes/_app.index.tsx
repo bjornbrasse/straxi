@@ -6,7 +6,7 @@ import {
 	TooltipTrigger,
 } from '#app/components/ui/tooltip.tsx'
 import { useOptionalUser } from '#app/utils/user.ts'
-import { logos, stars } from '../_marketing+/logos/logos.ts'
+import { logos, stars } from './_marketing+/logos/logos.ts'
 
 export default function Index() {
 	const user = useOptionalUser()

@@ -1,10 +1,10 @@
 import { type DataFunctionArgs, json } from '@remix-run/node'
 import { NavLink, Outlet, useLoaderData } from '@remix-run/react'
 import { Tab } from '#app/components/tab.tsx'
+import { Icon, type IconName } from '#app/components/ui/icon.tsx'
 import { cn } from '#app/utils/misc.tsx'
 import { sessionStorage } from '#app/utils/session.server.ts'
 import { useOptionalUser } from '#app/utils/user.ts'
-import { Icon, IconName } from '#app/components/ui/icon.tsx'
 
 export async function loader({ request }: DataFunctionArgs) {
 	const cookieSession = await sessionStorage.getSession(
