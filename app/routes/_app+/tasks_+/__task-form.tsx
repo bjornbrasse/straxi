@@ -15,6 +15,7 @@ import { StatusButton } from '#app/components/ui/status-button.tsx'
 import { requireUserId } from '#app/utils/auth.server.ts'
 import { prisma } from '#app/utils/db.server.ts'
 import { invariantResponse } from '#app/utils/misc.tsx'
+import { TagCombobox } from '../tags_+/__tag-combobox.tsx'
 
 const TaskSchema = z.object({
 	id: z.string().optional(),
@@ -25,7 +26,8 @@ const TaskSchema = z.object({
 	description: z.string().optional(),
 })
 
-export async function action({ params, request }: DataFunctionArgs) {
+export async function action({ request }: DataFunctionArgs) {
+	console.log('VKVLWJVLWKVJWVKLWVJ')
 	const userId = await requireUserId(request)
 
 	const formData = await request.formData()
@@ -119,13 +121,7 @@ export function TaskForm({
 				}}
 				errors={fields.name.errors}
 			/>
-			{/* <Field
-				labelProps={{ children: 'Achternaam:' }}
-				inputProps={{
-					...conform.input(fields.lastName, { ariaAttributes: true }),
-				}}
-				errors={fields.lastName.errors}
-			/> */}
+			<TagCombobox />
 			<ErrorList id={form.errorId} errors={form.errors} />
 			<div>
 				{/* <Button form={form.id} variant="destructive" type="reset">

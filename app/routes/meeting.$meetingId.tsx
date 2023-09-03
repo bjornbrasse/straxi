@@ -41,7 +41,7 @@ export default function MeetingLayout() {
 					<NavTab caption="Afpsraken" iconName="calendar" to="appointments" />
 					<NavTab caption="Taken" iconName="lightning-bolt" to="tasks" />
 				</div>
-				<div className="flex-1 overflow-auto">
+				<div className="flex-1">
 					<Outlet />
 				</div>
 			</div>

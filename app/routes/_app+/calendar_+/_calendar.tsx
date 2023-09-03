@@ -1,10 +1,11 @@
 import { redirect, type DataFunctionArgs, json } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
+import { Link, useLoaderData } from '@remix-run/react'
 import { Button } from '#app/components/ui/button.tsx'
 import { Dialog } from '#app/components/ui/dialog.tsx'
 import { Icon } from '#app/components/ui/icon.tsx'
 import { requireUserId } from '#app/utils/auth.server.ts'
 import { AppointmentEditor } from './__appointment-editor.tsx'
+import { DropdownMenu } from '#app/components/ui/dropdown-menu_new.tsx'
 
 export async function loader({ request }: DataFunctionArgs) {
 	await requireUserId(request)
@@ -90,9 +91,22 @@ export default function Index() {
 					</div>
 				</section>
 			</div>
-			<Button variant="fab">
-				<Icon name="plus" />
-			</Button>
+			<DropdownMenu>
+				<DropdownMenu.Trigger asChild>
+					<Button variant="fab">
+						<Icon name="plus" />
+					</Button>
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content align="end">
+					<DropdownMenu.Item asChild>
+						<Link prefetch="intent" to={`/meetings/new`}>
+							<Icon className="text-body-md" name="chat-bubble">
+								Vergaderingen
+							</Icon>
+						</Link>
+					</DropdownMenu.Item>
+				</DropdownMenu.Content>
+			</DropdownMenu>
 		</main>
 	)
 }

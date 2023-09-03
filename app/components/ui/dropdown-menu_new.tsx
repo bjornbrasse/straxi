@@ -3,19 +3,18 @@ import * as React from 'react'
 
 import { cn } from '#app/utils/misc.tsx'
 
-const DropdownMenu = RadixDropdownMenu.Root
+export function DropdownMenu({
+	children,
+}: RadixDropdownMenu.DropdownMenuProps) {
+	return <RadixDropdownMenu.Root>{children}</RadixDropdownMenu.Root>
+}
+DropdownMenu.Trigger = RadixDropdownMenu.Trigger
+DropdownMenu.Group = RadixDropdownMenu.Group
+DropdownMenu.Portal = RadixDropdownMenu.Portal
+DropdownMenu.Sub = RadixDropdownMenu.Sub
+DropdownMenu.RadioGroup = RadixDropdownMenu.RadioGroup
 
-const DropdownMenuTrigger = RadixDropdownMenu.Trigger
-
-const DropdownMenuGroup = RadixDropdownMenu.Group
-
-const DropdownMenuPortal = RadixDropdownMenu.Portal
-
-const DropdownMenuSub = RadixDropdownMenu.Sub
-
-const DropdownMenuRadioGroup = RadixDropdownMenu.RadioGroup
-
-const DropdownMenuSubTrigger = React.forwardRef<
+DropdownMenu.SubTrigger = React.forwardRef<
 	React.ElementRef<typeof RadixDropdownMenu.SubTrigger>,
 	React.ComponentPropsWithoutRef<typeof RadixDropdownMenu.SubTrigger> & {
 		inset?: boolean
@@ -34,9 +33,9 @@ const DropdownMenuSubTrigger = React.forwardRef<
 		<span className="ml-auto h-4 w-4">▶️</span>
 	</RadixDropdownMenu.SubTrigger>
 ))
-DropdownMenuSubTrigger.displayName = RadixDropdownMenu.SubTrigger.displayName
+DropdownMenu.SubTrigger.displayName = RadixDropdownMenu.SubTrigger.displayName
 
-const DropdownMenuSubContent = React.forwardRef<
+DropdownMenu.SubContent = React.forwardRef<
 	React.ElementRef<typeof RadixDropdownMenu.SubContent>,
 	React.ComponentPropsWithoutRef<typeof RadixDropdownMenu.SubContent>
 >(({ className, ...props }, ref) => (
@@ -49,9 +48,9 @@ const DropdownMenuSubContent = React.forwardRef<
 		{...props}
 	/>
 ))
-DropdownMenuSubContent.displayName = RadixDropdownMenu.SubContent.displayName
+DropdownMenu.SubContent.displayName = RadixDropdownMenu.SubContent.displayName
 
-const DropdownMenuContent = React.forwardRef<
+DropdownMenu.Content = React.forwardRef<
 	React.ElementRef<typeof RadixDropdownMenu.Content>,
 	React.ComponentPropsWithoutRef<typeof RadixDropdownMenu.Content>
 >(({ className, sideOffset = 4, ...props }, ref) => (
@@ -67,9 +66,9 @@ const DropdownMenuContent = React.forwardRef<
 		/>
 	</RadixDropdownMenu.Portal>
 ))
-DropdownMenuContent.displayName = RadixDropdownMenu.Content.displayName
+DropdownMenu.Content.displayName = RadixDropdownMenu.Content.displayName
 
-const DropdownMenuItem = React.forwardRef<
+DropdownMenu.Item = React.forwardRef<
 	React.ElementRef<typeof RadixDropdownMenu.Item>,
 	React.ComponentPropsWithoutRef<typeof RadixDropdownMenu.Item> & {
 		inset?: boolean
@@ -85,9 +84,9 @@ const DropdownMenuItem = React.forwardRef<
 		{...props}
 	/>
 ))
-DropdownMenuItem.displayName = RadixDropdownMenu.Item.displayName
+DropdownMenu.Item.displayName = RadixDropdownMenu.Item.displayName
 
-const DropdownMenuCheckboxItem = React.forwardRef<
+DropdownMenu.CheckboxItem = React.forwardRef<
 	React.ElementRef<typeof RadixDropdownMenu.CheckboxItem>,
 	React.ComponentPropsWithoutRef<typeof RadixDropdownMenu.CheckboxItem>
 >(({ className, children, checked, ...props }, ref) => (
@@ -117,10 +116,10 @@ const DropdownMenuCheckboxItem = React.forwardRef<
 		{children}
 	</RadixDropdownMenu.CheckboxItem>
 ))
-DropdownMenuCheckboxItem.displayName =
+DropdownMenu.CheckboxItem.displayName =
 	RadixDropdownMenu.CheckboxItem.displayName
 
-const DropdownMenuRadioItem = React.forwardRef<
+DropdownMenu.RadioItem = React.forwardRef<
 	React.ElementRef<typeof RadixDropdownMenu.RadioItem>,
 	React.ComponentPropsWithoutRef<typeof RadixDropdownMenu.RadioItem>
 >(({ className, children, ...props }, ref) => (
@@ -140,9 +139,9 @@ const DropdownMenuRadioItem = React.forwardRef<
 		{children}
 	</RadixDropdownMenu.RadioItem>
 ))
-DropdownMenuRadioItem.displayName = RadixDropdownMenu.RadioItem.displayName
+DropdownMenu.RadioItem.displayName = RadixDropdownMenu.RadioItem.displayName
 
-const DropdownMenuLabel = React.forwardRef<
+DropdownMenu.Label = React.forwardRef<
 	React.ElementRef<typeof RadixDropdownMenu.Label>,
 	React.ComponentPropsWithoutRef<typeof RadixDropdownMenu.Label> & {
 		inset?: boolean
@@ -158,9 +157,9 @@ const DropdownMenuLabel = React.forwardRef<
 		{...props}
 	/>
 ))
-DropdownMenuLabel.displayName = RadixDropdownMenu.Label.displayName
+DropdownMenu.Label.displayName = RadixDropdownMenu.Label.displayName
 
-const DropdownMenuSeparator = React.forwardRef<
+DropdownMenu.Separator = React.forwardRef<
 	React.ElementRef<typeof RadixDropdownMenu.Separator>,
 	React.ComponentPropsWithoutRef<typeof RadixDropdownMenu.Separator>
 >(({ className, ...props }, ref) => (
@@ -170,35 +169,15 @@ const DropdownMenuSeparator = React.forwardRef<
 		{...props}
 	/>
 ))
-DropdownMenuSeparator.displayName = RadixDropdownMenu.Separator.displayName
+DropdownMenu.Separator.displayName = RadixDropdownMenu.Separator.displayName
 
-const DropdownMenuShortcut = ({
-	className,
-	...props
-}: React.HTMLAttributes<HTMLSpanElement>) => {
-	return (
-		<span
-			className={cn('ml-auto text-xs tracking-widest opacity-60', className)}
-			{...props}
-		/>
-	)
-}
-DropdownMenuShortcut.displayName = 'DropdownMenuShortcut'
-
-export {
-	DropdownMenu,
-	DropdownMenuTrigger,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuCheckboxItem,
-	DropdownMenuRadioItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuShortcut,
-	DropdownMenuGroup,
-	DropdownMenuPortal,
-	DropdownMenuSub,
-	DropdownMenuSubContent,
-	DropdownMenuSubTrigger,
-	DropdownMenuRadioGroup,
-}
+// DropdownMenu.Shortcut = ({
+// 	className,
+// 	...props
+// }: React.HTMLAttributes<HTMLSpanElement>) => (
+// 	<span
+// 		className={cn('ml-auto text-xs tracking-widest opacity-60', className)}
+// 		{...props}
+// 	/>
+// )
+// DropdownMenu.Shortcut.displayName = 'DropdownMenuShortcut'
