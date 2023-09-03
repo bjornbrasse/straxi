@@ -1,5 +1,6 @@
 import { redirect, type DataFunctionArgs, json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
+import { Button } from '#app/components/ui/button.tsx'
 import { Dialog } from '#app/components/ui/dialog.tsx'
 import { Icon } from '#app/components/ui/icon.tsx'
 import { requireUserId } from '#app/utils/auth.server.ts'
@@ -59,7 +60,7 @@ export default function Index() {
 	const { date } = useLoaderData<typeof loader>()
 
 	return (
-		<main className="flex h-full flex-col">
+		<main className="relative flex h-full flex-col">
 			<div id="header" className="px-4 py-1">
 				<h1>Kalender</h1>
 				<p>{date}</p>
@@ -89,6 +90,9 @@ export default function Index() {
 					</div>
 				</section>
 			</div>
+			<Button variant="fab">
+				<Icon name="plus" />
+			</Button>
 		</main>
 	)
 }
