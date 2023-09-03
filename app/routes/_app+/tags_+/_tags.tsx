@@ -52,12 +52,28 @@ export default function TagsRoute() {
 								{tag.name}
 								<DropdownMenu>
 									<DropdownMenu.Trigger asChild>
-										<Button variant="transparent" size="xs">
+										<Button
+											onClick={e => {
+												e.preventDefault()
+											}}
+											type="button"
+											variant="transparent"
+											size="xs"
+										>
 											<Icon name="dots-vertical" />
 										</Button>
 									</DropdownMenu.Trigger>
 									<DropdownMenu.Content align="end">
-										<DropdownMenu.Item>Delete</DropdownMenu.Item>
+										<DropdownMenu.Item
+											onClick={e => {
+												e.stopPropagation()
+											}}
+										>
+											Delete
+										</DropdownMenu.Item>
+										<DropdownMenu.Item className="text-lg" asChild>
+											<Icon name="cross-1">Verwijderen</Icon>
+										</DropdownMenu.Item>
 									</DropdownMenu.Content>
 								</DropdownMenu>
 							</li>

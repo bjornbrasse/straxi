@@ -52,8 +52,8 @@ export default function AppLayout() {
 						>
 							<NavTab caption="Calendar" iconName="calendar" to="/calendar" />
 							<NavTab caption="Taken" iconName="lightning-bolt" to="/tasks" />
-							<NavTab caption="Taken" iconName="tag" to="/tags" />
 							<NavTab caption="Gebruikers" iconName="person" to="/contacts" />
+							<NavTab caption="Taken" iconName="tag" to="/tags" />
 							<NavTab
 								caption="Vergaderingen"
 								iconName="chat-bubble"

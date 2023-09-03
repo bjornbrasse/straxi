@@ -2,10 +2,10 @@ import { redirect, type DataFunctionArgs, json } from '@remix-run/node'
 import { Link, useLoaderData } from '@remix-run/react'
 import { Button } from '#app/components/ui/button.tsx'
 import { Dialog } from '#app/components/ui/dialog.tsx'
+import { DropdownMenu } from '#app/components/ui/dropdown-menu_new.tsx'
 import { Icon } from '#app/components/ui/icon.tsx'
 import { requireUserId } from '#app/utils/auth.server.ts'
 import { AppointmentEditor } from './__appointment-editor.tsx'
-import { DropdownMenu } from '#app/components/ui/dropdown-menu_new.tsx'
 
 export async function loader({ request }: DataFunctionArgs) {
 	await requireUserId(request)

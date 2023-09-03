@@ -8,9 +8,12 @@ import {
 	type SerializeFrom,
 } from '@remix-run/node'
 import { Form, useFetcher } from '@remix-run/react'
+import { useState } from 'react'
 import { z } from 'zod'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
 import { ErrorList, Field } from '#app/components/forms.tsx'
+import { Button } from '#app/components/ui/button.tsx'
+import { Icon } from '#app/components/ui/icon.tsx'
 import { StatusButton } from '#app/components/ui/status-button.tsx'
 import { requireUserId } from '#app/utils/auth.server.ts'
 import { prisma } from '#app/utils/db.server.ts'
@@ -27,7 +30,7 @@ const TaskSchema = z.object({
 })
 
 export async function action({ request }: DataFunctionArgs) {
-	console.log('VKVLWJVLWKVJWVKLWVJ')
+	console.log('DEZE MEOT IK ZIEN   VKVLWJVLWKVJWVKLWVJ')
 	const userId = await requireUserId(request)
 
 	const formData = await request.formData()
@@ -49,9 +52,9 @@ export async function action({ request }: DataFunctionArgs) {
 		async: true,
 	})
 
-	if (submission.intent !== 'submit') {
-		return json({ status: 'idle', submission } as const)
-	}
+	// if (submission.intent !== 'submit') {
+	// 	return json({ status: 'idle', submission } as const)
+	// }
 
 	if (!submission.value) {
 		return json({ status: 'error', submission } as const, { status: 400 })
@@ -98,6 +101,10 @@ export function TaskForm({
 		},
 	})
 
+	const [tagsSelected, setTagsSelected] = useState<
+		Array<{ value: string; caption: string }>
+	>([])
+
 	return (
 		<Form
 			method="POST"
@@ -121,7 +128,24 @@ export function TaskForm({
 				}}
 				errors={fields.name.errors}
 			/>
-			<TagCombobox />
+			<div className="flex gap-1 overflow-x-hidden">
+				{tagsSelected.map(l => (
+					<div
+						className="flex items-center rounded-lg bg-accent px-2 py-1 text-sm"
+						key={l.value}
+					>
+						{l.caption}
+						<Button variant="transparent">
+							<Icon name="cross-1" />
+						</Button>
+					</div>
+				))}
+			</div>
+			<TagCombobox
+				onSelectedItemChange={({ selectedItem }) => {
+					if (selectedItem) setTagsSelected(prev => [...prev, selectedItem])
+				}}
+			/>
 			<ErrorList id={form.errorId} errors={form.errors} />
 			<div>
 				{/* <Button form={form.id} variant="destructive" type="reset">

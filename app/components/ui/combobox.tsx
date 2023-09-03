@@ -1,10 +1,25 @@
-import { useCombobox } from 'downshift'
+import { type UseComboboxStateChange, useCombobox } from 'downshift'
 import { cn } from '#app/utils/misc.tsx'
 
 export function Combobox({
 	items,
+	labelText,
+	onInputValueChange,
+	onSelectedItemChange,
+	placeholder,
 }: {
 	items: Array<{ value: string; caption: string }>
+	labelText: string
+	onInputValueChange?: (
+		changes: UseComboboxStateChange<{ value: string; caption: string }>,
+	) => void
+	onSelectedItemChange?: (
+		changes: UseComboboxStateChange<{
+			value: string
+			caption: string
+		}>,
+	) => void
+	placeholder: string
 }) {
 	// const [items, setItems] = React.useState(books)
 	const {
@@ -17,24 +32,23 @@ export function Combobox({
 		getItemProps,
 		selectedItem,
 	} = useCombobox({
-		onInputValueChange({ inputValue }) {
-			// setItems(books.filter(getBooksFilter(inputValue)))
-		},
 		items,
 		itemToString(item) {
 			return item ? item.caption : ''
 		},
+		onInputValueChange,
+		onSelectedItemChange,
 	})
 
 	return (
 		<div>
 			<div className="flex w-72 flex-col gap-1">
 				<label className="w-fit" {...getLabelProps()}>
-					Choose your favorite book:
+					{labelText}
 				</label>
 				<div className="flex gap-0.5 bg-white shadow-sm">
 					<input
-						placeholder="Best book ever"
+						placeholder={placeholder}
 						className="w-full p-1.5"
 						{...getInputProps()}
 					/>

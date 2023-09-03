@@ -1,7 +1,11 @@
 import { conform, useForm } from '@conform-to/react'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import { type Tag } from '@prisma/client'
-import { type DataFunctionArgs, redirect } from '@remix-run/node'
+import {
+	type DataFunctionArgs,
+	redirect,
+	type SerializeFrom,
+} from '@remix-run/node'
 import { Form, useFetcher } from '@remix-run/react'
 import { z } from 'zod'
 import { Field } from '#app/components/forms.tsx'
@@ -30,7 +34,11 @@ export async function action({ request }: DataFunctionArgs) {
 	return redirect('/tags')
 }
 
-export function TagForm({ tag }: { tag?: Pick<Tag, 'id' | 'name'> }) {
+export function TagForm({
+	tag,
+}: {
+	tag?: SerializeFrom<Pick<Tag, 'id' | 'name'>>
+}) {
 	const fetcher = useFetcher()
 	const isPending = fetcher.state !== 'idle'
 
