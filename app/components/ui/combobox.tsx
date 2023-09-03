@@ -1,5 +1,8 @@
 import { type UseComboboxStateChange, useCombobox } from 'downshift'
+// import { useState } from 'react'
 import { cn } from '#app/utils/misc.tsx'
+
+type Item = { value: string; caption: string }
 
 export function Combobox({
 	items,
@@ -8,20 +11,15 @@ export function Combobox({
 	onSelectedItemChange,
 	placeholder,
 }: {
-	items: Array<{ value: string; caption: string }>
+	items: Array<Item>
 	labelText: string
-	onInputValueChange?: (
-		changes: UseComboboxStateChange<{ value: string; caption: string }>,
-	) => void
-	onSelectedItemChange?: (
-		changes: UseComboboxStateChange<{
-			value: string
-			caption: string
-		}>,
-	) => void
+	onInputValueChange?: (changes: UseComboboxStateChange<Item>) => void
+	onSelectedItemChange?: (changes: UseComboboxStateChange<Item>) => void
 	placeholder: string
 }) {
-	// const [items, setItems] = React.useState(books)
+	// const [filteredItems, setFilteredItems] = useState<Array<Item>>(items)
+	// const [filteredItems] = useState<Array<Item>>(items)
+
 	const {
 		isOpen,
 		getToggleButtonProps,
@@ -36,7 +34,18 @@ export function Combobox({
 		itemToString(item) {
 			return item ? item.caption : ''
 		},
-		onInputValueChange,
+		// onInputValueChange: onInputValueChange
+		// 	? ({ inputValue }) => {
+		// 			if (inputValue) {
+		// 				console.log('ECHT')
+		// 				setFilteredItems(
+		// 					items.filter(item =>
+		// 						item.caption.toLowerCase().startsWith(inputValue.toLowerCase()),
+		// 					),
+		// 				)
+		// 			}
+		// 	  }
+		// 	: undefined,
 		onSelectedItemChange,
 	})
 
