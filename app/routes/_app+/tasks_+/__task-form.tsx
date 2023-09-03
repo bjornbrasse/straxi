@@ -109,7 +109,7 @@ export function TaskForm({
 		<Form
 			method="POST"
 			className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden p-4 sm:gap-4"
-			{...form.props}
+			// {...form.props}
 		>
 			{task ? <input type="hidden" name="id" value={task.id} /> : null}
 
@@ -142,8 +142,10 @@ export function TaskForm({
 				))}
 			</div>
 			<TagCombobox
-				onSelectedItemChange={({ selectedItem }) => {
+				onSelectedItemChange={({ selectedItem, ...change }) => {
 					if (selectedItem) setTagsSelected(prev => [...prev, selectedItem])
+					// change.inputValue = ''
+					// change.isOpen = false
 				}}
 			/>
 			<ErrorList id={form.errorId} errors={form.errors} />

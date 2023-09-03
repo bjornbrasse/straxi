@@ -29,9 +29,10 @@ export async function action({ request }: DataFunctionArgs) {
 	const tag = await prisma.tag.create({
 		// data: { ...result.data, createdById: userId },
 		data: { name: result.data.name, createdById: userId },
+		select: { id: true },
 	})
 	invariantResponse(tag, 'Tag not created')
-	return redirect('/tags')
+	return redirect(`/tags/${tag.id}`)
 }
 
 export function TagForm({
