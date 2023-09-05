@@ -17,6 +17,7 @@ async function seed() {
 	await prisma.user.deleteMany()
 	await prisma.role.deleteMany()
 	await prisma.permission.deleteMany()
+	await prisma.project.deleteMany()
 	console.timeEnd('🧹 Cleaned up the database...')
 
 	console.time('🔑 Created permissions...')
@@ -249,7 +250,7 @@ async function seed() {
 	// 	},
 	// })
 
-	await prisma.user.create({
+	const admin = await prisma.user.create({
 		select: { id: true },
 		data: {
 			email: 'bpbrasse@bra-c.nl',
@@ -281,6 +282,17 @@ async function seed() {
 		},
 	})
 	console.timeEnd(`😄 Created admin user`)
+
+	const numberOfProjects = 20
+	console.time(`🔥 Created ${numberOfProjects} projects`)
+
+	for (let index = 0; index < numberOfProjects; index++) {
+		await prisma.project.create({
+			data: { name: faker.company.buzzPhrase(), createdById: admin.id },
+		})
+	}
+
+	console.timeEnd(`🔥 Created ${numberOfProjects} projects`)
 
 	console.timeEnd(`🌱 Database has been seeded`)
 }

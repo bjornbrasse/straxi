@@ -1,10 +1,12 @@
 import { json, type DataFunctionArgs, redirect } from '@remix-run/node'
-import { Form, Link, useLoaderData } from '@remix-run/react'
+import { Form, Link, Outlet, useLoaderData } from '@remix-run/react'
+import { useEffect, useState } from 'react'
 import { z } from 'zod'
+import { NavTab } from '#app/components/navtab.tsx'
 import { Button } from '#app/components/ui/button.tsx'
 import { Icon } from '#app/components/ui/icon.tsx'
 import { prisma } from '#app/utils/db.server.ts'
-import { invariantResponse } from '#app/utils/misc.tsx'
+import { cn, invariantResponse } from '#app/utils/misc.tsx'
 
 export async function loader({ params }: DataFunctionArgs) {
 	const project = await prisma.project.findUnique({
@@ -38,9 +40,29 @@ export async function action({ request }: DataFunctionArgs) {
 
 export default function ProjectRoute() {
 	const data = useLoaderData<typeof loader>()
+	const [loaded, setLoaded] = useState(false)
+
+	useEffect(() => {
+		setTimeout(() => {
+			setLoaded(true)
+		}, 100)
+	}, [])
 
 	return (
-		<div className="h-full border-t border-indigo-800">
+		<div className="relative h-full border-t border-indigo-800">
+			<div
+				className={cn('ml-[70px] flex gap-1 border-2 border-red-600', {
+					'-translate-y-[52px] transform duration-500': loaded,
+				})}
+			>
+				<NavTab caption={''} iconName={'arrow-left'} to="test" />
+				<NavTab caption="Taken" iconName="lightning-bolt" to="tasks" />
+				<NavTab
+					caption="Gebruikers"
+					iconName="lightning-bolt"
+					to="appointments"
+				/>
+			</div>
 			<div className="flex items-center justify-between p-4">
 				<h2>{data.project.name}</h2>
 				<div className="flex gap-1">
@@ -66,6 +88,9 @@ export default function ProjectRoute() {
 						</Link>
 					</Button>
 				</div>
+			</div>
+			<div className="border-2 border-red-600">
+				<Outlet />
 			</div>
 		</div>
 	)

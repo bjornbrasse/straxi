@@ -1,12 +1,12 @@
 import { type DataFunctionArgs, json } from '@remix-run/node'
 import {
-	NavLink,
 	Outlet,
 	type V2_MetaFunction,
 	useLoaderData,
+	useParams,
 } from '@remix-run/react'
+import { NavTab } from '#app/components/navtab.tsx'
 import { Tab } from '#app/components/tab.tsx'
-import { Icon, type IconName } from '#app/components/ui/icon.tsx'
 import { cn } from '#app/utils/misc.tsx'
 import { sessionStorage } from '#app/utils/session.server.ts'
 import { useOptionalUser } from '#app/utils/user.ts'
@@ -35,6 +35,7 @@ export async function loader({ request }: DataFunctionArgs) {
 export default function AppLayout() {
 	const data = useLoaderData<typeof loader>()
 	const user = useOptionalUser()
+	const { projectId } = useParams()
 
 	return (
 		<>
@@ -50,15 +51,47 @@ export default function AppLayout() {
 							id="tabs"
 							className="flex w-full flex-row gap-1.5 border-b border-indigo-800 px-4 pt-2 sm:w-48 sm:flex-col"
 						>
-							<NavTab caption="Calendar" iconName="calendar" to="/calendar" />
-							<NavTab caption="Projecten" iconName="mix" to="/projects" />
-							<NavTab caption="Taken" iconName="lightning-bolt" to="/tasks" />
-							<NavTab caption="Gebruikers" iconName="person" to="/contacts" />
+							<NavTab
+								caption="Calendar"
+								iconName="calendar"
+								to="/calendar"
+								className={cn({
+									'transform opacity-0 duration-150': projectId,
+								})}
+							/>
+							<NavTab
+								caption="Projecten"
+								iconName="mix"
+								to="/projects"
+								className={cn({
+									'delay-50 -translate-x-14 transform duration-300': projectId,
+								})}
+							/>
+							<NavTab
+								caption="Taken"
+								iconName="lightning-bolt"
+								to="/tasks"
+								className={cn({
+									'transform opacity-0 duration-150': projectId,
+								})}
+							/>
+							<NavTab
+								caption="Gebruikers"
+								iconName="person"
+								to="/contacts"
+								className={cn({
+									'transform opacity-0 duration-150': projectId,
+								})}
+							/>
+
 							{/* <NavTab caption="Taken" iconName="tag" to="/tags" /> */}
 							<NavTab
 								caption="Vergaderingen"
 								iconName="chat-bubble"
 								to="/meetings"
+								className={cn({
+									'transform opacity-0 duration-150': projectId,
+								})}
 							/>
 						</div>
 						<div className="flex-1 overflow-auto">
@@ -70,32 +103,6 @@ export default function AppLayout() {
 				<Outlet />
 			)}
 		</>
-	)
-}
-
-function NavTab({
-	caption,
-	iconName,
-	to,
-}: {
-	caption: string
-	iconName: IconName
-	to: string
-}) {
-	return (
-		<NavLink
-			to={to}
-			className={({ isActive }) =>
-				cn(
-					'rounded-t-lg border-x border-t p-3 text-2xl text-accent sm:p-4',
-					isActive && 'border-indigo-800 bg-indigo-400 text-white',
-					!isActive && ' border-gray-300 bg-transparent text-gray-400',
-				)
-			}
-		>
-			<span className="hidden sm:inline">{caption}</span>
-			<Icon name={iconName} className="block sm:hidden" />
-		</NavLink>
 	)
 }
 

@@ -35,7 +35,7 @@ export default function ProjectsRoute() {
 			<ul
 				className={cn(
 					'flex list-none flex-col gap-1 overflow-y-auto px-4 pb-16 pt-4',
-					{ 'h-24': projectId, 'flex-1': !projectId },
+					{ hidden: projectId, 'flex-1': !projectId },
 				)}
 			>
 				{data.projects
