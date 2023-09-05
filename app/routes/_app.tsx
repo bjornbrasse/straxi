@@ -60,7 +60,7 @@ export default function AppLayout() {
 					iconName="mix"
 					to="/projects"
 					className={cn({
-						'transform opacity-0 duration-150': contactId || taskId,
+						'transform opacity-0 duration-500': contactId || taskId,
 						'delay-50 -translate-x-14 transform duration-300': projectId,
 					})}
 				/>
@@ -69,7 +69,7 @@ export default function AppLayout() {
 					iconName="lightning-bolt"
 					to="/tasks"
 					className={cn({
-						'transform opacity-0 duration-150': contactId || projectId,
+						'transform opacity-0 duration-500': contactId || projectId,
 						'delay-50 -translate-x-[112px] transform duration-300': taskId,
 					})}
 				/>
@@ -78,7 +78,7 @@ export default function AppLayout() {
 					iconName="person"
 					to="/contacts"
 					className={cn({
-						'transform opacity-0 duration-150': projectId || taskId,
+						'transform opacity-0 duration-500': projectId || taskId,
 						'delay-50 -translate-x-[168px] transform duration-300': contactId,
 					})}
 				/>
@@ -87,7 +87,7 @@ export default function AppLayout() {
 					iconName="chat-bubble"
 					to="/meetings"
 					className={cn({
-						'transform opacity-0 duration-150':
+						'transform opacity-0 duration-500':
 							contactId || projectId || taskId,
 					})}
 				/>

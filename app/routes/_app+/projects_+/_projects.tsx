@@ -30,11 +30,21 @@ export default function ProjectsRoute() {
 	const data = useLoaderData<typeof loader>()
 	const { projectId } = useParams()
 
+	if (projectId)
+		return (
+			<div className="relative flex-1">
+				<Outlet />
+			</div>
+		)
+
 	return (
-		<div className="flex h-full overflow-y-hidden">
+		<div className="flex h-full flex-col overflow-y-hidden">
+			<p className="mx-auto py-2 text-xl font-bold text-indigo-900">
+				Projecten
+			</p>
 			<ul
 				className={cn(
-					'flex flex-1 list-none flex-col gap-1 overflow-y-auto px-2 pb-16 pt-4',
+					'flex flex-1 list-none flex-col gap-1 overflow-y-auto px-4 pb-16',
 					{
 						hidden: projectId,
 						'flex-1': !projectId,
@@ -105,17 +115,11 @@ export default function ProjectsRoute() {
 						</NavLink>
 					))}
 			</ul>
-			{projectId ? (
-				<div className="flex-1">
-					<Outlet />
-				</div>
-			) : (
-				<Button variant="fab" autoFocus asChild>
-					<Link to="new">
-						<Icon name="plus" />
-					</Link>
-				</Button>
-			)}
+			<Button variant="fab" autoFocus asChild>
+				<Link to="new">
+					<Icon name="plus" />
+				</Link>
+			</Button>
 		</div>
 	)
 }
