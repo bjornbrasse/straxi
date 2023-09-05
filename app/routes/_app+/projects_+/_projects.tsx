@@ -7,7 +7,9 @@ import {
 	Outlet,
 } from '@remix-run/react'
 import { promiseHash } from 'remix-utils'
+import { DateSelector } from '#app/components/date-selector.tsx'
 import { Button } from '#app/components/ui/button.tsx'
+import { Dialog } from '#app/components/ui/dialog.tsx'
 import { DropdownMenu } from '#app/components/ui/dropdown-menu_new.tsx'
 import { Icon } from '#app/components/ui/icon.tsx'
 import { requireUserId } from '#app/utils/auth.server.ts'
@@ -64,6 +66,24 @@ export default function ProjectsRoute() {
 										</Button>
 									</DropdownMenu.Trigger>
 									<DropdownMenu.Content align="end">
+										<DropdownMenu.Item
+											onClick={e => {
+												e.stopPropagation()
+											}}
+										>
+											<Dialog>
+												<Dialog.Trigger>Set FollowUp Date</Dialog.Trigger>
+												<Dialog.Content>
+													<DateSelector
+														activeDate={new Date()}
+														date={new Date()}
+														onSelect={function (date: Date): void {
+															throw new Error('Function not implemented.')
+														}}
+													/>
+												</Dialog.Content>
+											</Dialog>
+										</DropdownMenu.Item>
 										<DropdownMenu.Item
 											onClick={e => {
 												e.stopPropagation()

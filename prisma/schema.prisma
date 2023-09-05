@@ -169,7 +169,8 @@ model Project {
   createdById String
   updatedAt   DateTime @updatedAt
 
-  name String
+  name         String
+  followUpDate DateTime?
 }
 
 model Task {

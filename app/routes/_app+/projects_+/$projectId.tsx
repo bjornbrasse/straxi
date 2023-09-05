@@ -7,20 +7,20 @@ import { prisma } from '#app/utils/db.server.ts'
 import { invariantResponse } from '#app/utils/misc.tsx'
 
 export async function loader({ params }: DataFunctionArgs) {
-	const tag = await prisma.tag.findUnique({
-		where: { id: params.tagId },
+	const project = await prisma.project.findUnique({
+		where: { id: params.projectId },
 		select: { id: true, name: true },
 	})
-	invariantResponse(tag, 'Tag not found', {
+	invariantResponse(project, 'Project not found', {
 		headers: {
-			Location: '/tags',
+			Location: '/projects',
 		},
 	})
-	return json({ tag })
+	return json({ project })
 }
 
 const FormSchema = z.discriminatedUnion('intent', [
-	z.object({ intent: z.literal('delete'), tagId: z.string().cuid() }),
+	z.object({ intent: z.literal('delete'), projectId: z.string().cuid() }),
 ])
 
 export async function action({ request }: DataFunctionArgs) {
@@ -28,24 +28,24 @@ export async function action({ request }: DataFunctionArgs) {
 	const result = FormSchema.safeParse(Object.fromEntries(formData))
 	invariantResponse(result.success, 'Error parsing request')
 	if (result.data.intent === 'delete') {
-		const tag = await prisma.tag.delete({
-			where: { id: result.data.tagId },
+		const project = await prisma.project.delete({
+			where: { id: result.data.projectId },
 		})
-		invariantResponse(tag, 'Tag not deleted')
-		return redirect('/tags')
+		invariantResponse(project, 'Project not deleted')
+		return redirect('/projects')
 	}
 }
 
-export default function TagRoute() {
+export default function ProjectRoute() {
 	const data = useLoaderData<typeof loader>()
 
 	return (
 		<div className="h-full border-t border-indigo-800">
 			<div className="flex items-center justify-between p-4">
-				<h2>{data.tag.name}</h2>
+				<h2>{data.project.name}</h2>
 				<div className="flex gap-1">
 					<Form method="POST">
-						<input type="hidden" name="tagId" value={data.tag.id} />
+						<input type="hidden" name="projectId" value={data.project.id} />
 						<Button
 							name="intent"
 							value="delete"
@@ -61,7 +61,7 @@ export default function TagRoute() {
 						</Link>
 					</Button>
 					<Button size="sm" asChild>
-						<Link to="/tags">
+						<Link to="/projects">
 							<Icon name="cross-1" />
 						</Link>
 					</Button>
