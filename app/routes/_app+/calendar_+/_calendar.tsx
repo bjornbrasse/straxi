@@ -1,11 +1,16 @@
 import { redirect, type DataFunctionArgs, json } from '@remix-run/node'
-import { Link, useLoaderData } from '@remix-run/react'
+import { Link, useFetcher, useLoaderData } from '@remix-run/react'
+import dayjs from 'dayjs'
+import { useState } from 'react'
 import { Button } from '#app/components/ui/button.tsx'
 import { Dialog } from '#app/components/ui/dialog.tsx'
 import { DropdownMenu } from '#app/components/ui/dropdown-menu_new.tsx'
 import { Icon } from '#app/components/ui/icon.tsx'
 import { requireUserId } from '#app/utils/auth.server.ts'
-import { AppointmentEditor } from './__appointment-editor.tsx'
+import { prisma } from '#app/utils/db.server.ts'
+import { AppointmentForm, action } from './__appointment-form.tsx'
+
+export { action }
 
 export async function loader({ request }: DataFunctionArgs) {
 	await requireUserId(request)
@@ -27,7 +32,12 @@ export async function loader({ request }: DataFunctionArgs) {
 
 	const date = new Date(searchParams.get('date') ?? '')
 
+	const appointments = await prisma.appointment.findMany({
+		select: { id: true, subject: true, start: true, end: true },
+	})
+
 	return json({
+		appointments,
 		date: `${
 			[
 				'zondag',
@@ -58,13 +68,17 @@ export async function loader({ request }: DataFunctionArgs) {
 }
 
 export default function Index() {
-	const { date } = useLoaderData<typeof loader>()
+	const data = useLoaderData<typeof loader>()
+	const appointmentFetcher = useFetcher()
+
+	const [showAppointmentEditDialog, setShowAppointmentEditDialog] =
+		useState(false)
 
 	return (
 		<main className="relative flex h-full flex-col">
 			<div id="header" className="px-4 py-1">
 				<h1>Kalender</h1>
-				<p>{date}</p>
+				<p>{data.date}</p>
 			</div>
 			<div className="flex h-full flex-1 flex-col">
 				<section className="flex-1">
@@ -80,9 +94,41 @@ export default function Index() {
 										Cancel
 									</Button>
 								</Dialog.Close> */}
-								<AppointmentEditor />
+								<AppointmentForm fetcher={appointmentFetcher} />
 							</Dialog.Content>
 						</Dialog>
+					</div>
+					<div className="flex flex-col gap-2 p-2">
+						{data.appointments.map(appointment => (
+							<div
+								className="flex justify-between rounded-md bg-accent px-2 py-1"
+								key={appointment.id}
+							>
+								<div className="">
+									<h2>{appointment.subject}</h2>
+									<span className="text-sm">{`${dayjs(appointment.start).format(
+										"D MMM 'YY",
+									)} ${dayjs(appointment.start).format('H:mm')}`}</span>
+									<p>{appointment.end}</p>
+								</div>
+								<Dialog
+									open={showAppointmentEditDialog}
+									onOpenChange={setShowAppointmentEditDialog}
+								>
+									<Dialog.Trigger asChild>
+										<Button>
+											<Icon name="pencil-1" />
+										</Button>
+									</Dialog.Trigger>
+									<Dialog.Content>
+										<AppointmentForm
+											appointment={appointment}
+											fetcher={appointmentFetcher}
+										/>
+									</Dialog.Content>
+								</Dialog>
+							</div>
+						))}
 					</div>
 				</section>
 				<section className="flex-1">

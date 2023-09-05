@@ -1,4 +1,4 @@
-import { conform, useForm } from '@conform-to/react'
+import { useForm } from '@conform-to/react'
 import { getFieldsetConstraint, parse } from '@conform-to/zod'
 import { type Task } from '@prisma/client'
 import {
@@ -7,18 +7,20 @@ import {
 	type DataFunctionArgs,
 	type SerializeFrom,
 } from '@remix-run/node'
-import { Form, useFetcher } from '@remix-run/react'
+import { useFetcher } from '@remix-run/react'
 import { useState } from 'react'
 import { z } from 'zod'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
-import { ErrorList, Field } from '#app/components/forms.tsx'
+import { ErrorList } from '#app/components/forms.tsx'
 import { Button } from '#app/components/ui/button.tsx'
 import { Icon } from '#app/components/ui/icon.tsx'
+import { Input } from '#app/components/ui/input.tsx'
+import { Label } from '#app/components/ui/label.tsx'
 import { StatusButton } from '#app/components/ui/status-button.tsx'
 import { requireUserId } from '#app/utils/auth.server.ts'
 import { prisma } from '#app/utils/db.server.ts'
 import { invariantResponse } from '#app/utils/misc.tsx'
-import { TagCombobox } from '../tags_+/__tag-combobox.tsx'
+// import { TagCombobox } from '../tags_+/__tag-combobox.tsx'
 
 const TaskSchema = z.object({
 	id: z.string().optional(),
@@ -30,7 +32,7 @@ const TaskSchema = z.object({
 })
 
 export async function action({ request }: DataFunctionArgs) {
-	console.log('DEZE MEOT IK ZIEN   VKVLWJVLWKVJWVKLWVJ')
+	console.log('DEZE MOET IK ZIEN - VKVLWJVLWKVJWVKLWVJ')
 	const userId = await requireUserId(request)
 
 	const formData = await request.formData()
@@ -52,9 +54,9 @@ export async function action({ request }: DataFunctionArgs) {
 		async: true,
 	})
 
-	// if (submission.intent !== 'submit') {
-	// 	return json({ status: 'idle', submission } as const)
-	// }
+	if (submission.intent !== 'submit') {
+		return json({ status: 'idle', submission } as const)
+	}
 
 	if (!submission.value) {
 		return json({ status: 'error', submission } as const, { status: 400 })
@@ -87,7 +89,8 @@ export function TaskForm({
 	const fetcher = useFetcher<typeof action>()
 	const isPending = fetcher.state !== 'idle'
 
-	const [form, fields] = useForm({
+	// const [form, fields] = useForm({
+	const [form] = useForm({
 		id: 'task-form',
 		constraint: getFieldsetConstraint(TaskSchema),
 		lastSubmission: fetcher.data?.submission,
@@ -101,33 +104,30 @@ export function TaskForm({
 		},
 	})
 
-	const [tagsSelected, setTagsSelected] = useState<
-		Array<{ value: string; caption: string }>
-	>([])
+	// const [tagsSelected, setTagsSelected] = useState<
+	const [tagsSelected] = useState<Array<{ value: string; caption: string }>>([])
 
 	return (
-		<Form
-			method="POST"
-			className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden p-4 sm:gap-4"
-			// {...form.props}
-		>
-			{task ? <input type="hidden" name="id" value={task.id} /> : null}
-
+		<fetcher.Form method="POST" {...form.props}>
 			{/*
 					This hidden submit button is here to ensure that when the user hits
 					"enter" on an input field, the primary form function is submitted
 					rather than the first button in the form (which is delete/add image).
 				*/}
-			<button type="submit" className="hidden" />
+			{/* <button type="submit" className="hidden" /> */}
+			{task && <input type="hidden" name="id" value={task.id} />}
 
-			<Field
+			<Label htmlFor="name">Naam:</Label>
+			<Input id="name" name="name" />
+
+			{/* <Field
 				labelProps={{ children: 'Onderwerp:' }}
 				inputProps={{
 					autoFocus: true,
 					...conform.input(fields.name, { ariaAttributes: true }),
 				}}
 				errors={fields.name.errors}
-			/>
+			/> */}
 			<div className="flex gap-1 overflow-x-hidden">
 				{tagsSelected.map(l => (
 					<div
@@ -141,20 +141,20 @@ export function TaskForm({
 					</div>
 				))}
 			</div>
-			<TagCombobox
+			{/* <TagCombobox
 				onSelectedItemChange={({ selectedItem, ...change }) => {
 					if (selectedItem) setTagsSelected(prev => [...prev, selectedItem])
-					// change.inputValue = ''
-					// change.isOpen = false
+					change.inputValue = ''
+					change.isOpen = false
 				}}
-			/>
+			/> */}
 			<ErrorList id={form.errorId} errors={form.errors} />
 			<div>
 				{/* <Button form={form.id} variant="destructive" type="reset">
-					Reset
-				</Button> */}
+		 			Reset
+		 		</Button> */}
 				<StatusButton
-					form={form.id}
+					// form={form.id}
 					type="submit"
 					disabled={isPending}
 					status={isPending ? 'pending' : 'idle'}
@@ -162,7 +162,7 @@ export function TaskForm({
 					Opslaan
 				</StatusButton>
 			</div>
-		</Form>
+		</fetcher.Form>
 	)
 }
 
