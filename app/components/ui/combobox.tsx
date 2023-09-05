@@ -51,7 +51,7 @@ export function Combobox({
 
 	return (
 		<div>
-			<div className="flex w-72 flex-col gap-1">
+			<div className="max-w-72 flex flex-col gap-1">
 				<label className="w-fit" {...getLabelProps()}>
 					{labelText}
 				</label>

@@ -98,7 +98,7 @@ export default function Index() {
 							</Dialog.Content>
 						</Dialog>
 					</div>
-					<div className="flex flex-col gap-2 p-2">
+					<div className="flex flex-col gap-2 overflow-y-auto p-2">
 						{data.appointments.map(appointment => (
 							<div
 								className="flex justify-between rounded-md bg-accent px-2 py-1"
@@ -116,7 +116,7 @@ export default function Index() {
 									onOpenChange={setShowAppointmentEditDialog}
 								>
 									<Dialog.Trigger asChild>
-										<Button>
+										<Button size="sm">
 											<Icon name="pencil-1" />
 										</Button>
 									</Dialog.Trigger>

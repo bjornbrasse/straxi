@@ -1,4 +1,5 @@
 import { type DataFunctionArgs } from '@remix-run/node'
+import { Link, useLoaderData } from '@remix-run/react'
 import { promiseHash } from 'remix-utils'
 import { Button } from '#app/components/ui/button.tsx'
 import { Dialog } from '#app/components/ui/dialog.tsx'
@@ -13,12 +14,25 @@ export async function loader({ request }: DataFunctionArgs) {
 }
 
 export default function TasksRoute() {
-	// const data = useLoaderData<typeof loader>()
+	const data = useLoaderData<typeof loader>()
 
 	return (
-		<div className="relative h-full border-4 border-pink-800 p-4">
+		<div className="relative h-full p-4">
 			<h1>TasksRoute</h1>
-			<div className="overflow-y-auto border-4 border-sky-600 p-4"></div>
+			<div className="flex flex-col gap-1 overflow-y-auto border-4 border-sky-600 p-4">
+				{data.tasks.map(task => (
+					<Link
+						to={task.id}
+						className="flex justify-between rounded-md bg-accent px-2 py-1"
+						key={task.id}
+					>
+						<div>{task.name}</div>
+						<Button size="sm">
+							<Icon name="pencil-2" />
+						</Button>
+					</Link>
+				))}
+			</div>
 			<Dialog>
 				<Dialog.Trigger asChild>
 					<Button variant="fab">

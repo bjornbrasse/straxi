@@ -11,7 +11,7 @@ import { useFetcher } from '@remix-run/react'
 import { useState } from 'react'
 import { z } from 'zod'
 import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
-import { ErrorList } from '#app/components/forms.tsx'
+// import { ErrorList } from '#app/components/forms.tsx'
 import { Button } from '#app/components/ui/button.tsx'
 import { Icon } from '#app/components/ui/icon.tsx'
 import { Input } from '#app/components/ui/input.tsx'
@@ -20,6 +20,7 @@ import { StatusButton } from '#app/components/ui/status-button.tsx'
 import { requireUserId } from '#app/utils/auth.server.ts'
 import { prisma } from '#app/utils/db.server.ts'
 import { invariantResponse } from '#app/utils/misc.tsx'
+import { TagCombobox } from '../tags_+/__tag-combobox.tsx'
 // import { TagCombobox } from '../tags_+/__tag-combobox.tsx'
 
 const TaskSchema = z.object({
@@ -32,9 +33,7 @@ const TaskSchema = z.object({
 })
 
 export async function action({ request }: DataFunctionArgs) {
-	console.log('DEZE MOET IK ZIEN - VKVLWJVLWKVJWVKLWVJ')
 	const userId = await requireUserId(request)
-
 	const formData = await request.formData()
 	const submission = await parse(formData, {
 		schema: TaskSchema.superRefine(async ({ id }, ctx) => {
@@ -84,7 +83,7 @@ export async function action({ request }: DataFunctionArgs) {
 export function TaskForm({
 	task,
 }: {
-	task?: SerializeFrom<Pick<Task, 'id' | 'start' | 'end'>>
+	task?: SerializeFrom<Pick<Task, 'id' | 'name' | 'start' | 'end'>>
 }) {
 	const fetcher = useFetcher<typeof action>()
 	const isPending = fetcher.state !== 'idle'
@@ -104,11 +103,15 @@ export function TaskForm({
 		},
 	})
 
-	// const [tagsSelected, setTagsSelected] = useState<
-	const [tagsSelected] = useState<Array<{ value: string; caption: string }>>([])
+	const [tagsSelected, setTagsSelected] = useState<
+		Array<{ value: string; caption: string }>
+	>([])
 
 	return (
-		<fetcher.Form method="POST" {...form.props}>
+		<fetcher.Form
+			method="POST"
+			className="flex w-11/12 flex-col gap-4 rounded-lg border-2 border-blue-300 p-4"
+		>
 			{/*
 					This hidden submit button is here to ensure that when the user hits
 					"enter" on an input field, the primary form function is submitted
@@ -117,8 +120,10 @@ export function TaskForm({
 			{/* <button type="submit" className="hidden" /> */}
 			{task && <input type="hidden" name="id" value={task.id} />}
 
-			<Label htmlFor="name">Naam:</Label>
-			<Input id="name" name="name" />
+			<div className="flex flex-col gap-1">
+				<Label htmlFor="name">Naam:</Label>
+				<Input id="name" name="name" />
+			</div>
 
 			{/* <Field
 				labelProps={{ children: 'Onderwerp:' }}
@@ -128,27 +133,37 @@ export function TaskForm({
 				}}
 				errors={fields.name.errors}
 			/> */}
-			<div className="flex gap-1 overflow-x-hidden">
-				{tagsSelected.map(l => (
-					<div
-						className="flex items-center rounded-lg bg-accent px-2 py-1 text-sm"
-						key={l.value}
-					>
-						{l.caption}
-						<Button variant="transparent">
-							<Icon name="cross-1" />
-						</Button>
-					</div>
-				))}
+			<div className="flex flex-col gap-1">
+				<Label htmlFor="start">Start:</Label>
+				<Input id="start" name="start" type="date" />
 			</div>
-			{/* <TagCombobox
-				onSelectedItemChange={({ selectedItem, ...change }) => {
-					if (selectedItem) setTagsSelected(prev => [...prev, selectedItem])
-					change.inputValue = ''
-					change.isOpen = false
-				}}
-			/> */}
-			<ErrorList id={form.errorId} errors={form.errors} />
+			<div className="flex flex-col gap-1">
+				<Label htmlFor="end">Einde:</Label>
+				<Input id="end" name="end" type="date" />
+			</div>
+			<div className="w-48">
+				<div className="flex gap-1 overflow-x-auto">
+					{tagsSelected.map(l => (
+						<div
+							className="flex grow-0 items-center rounded-lg bg-accent px-2 py-1 text-sm"
+							key={l.value}
+						>
+							{l.caption}
+							<Button variant="transparent">
+								<Icon name="cross-1" />
+							</Button>
+						</div>
+					))}
+				</div>
+				<TagCombobox
+					onSelectedItemChange={({ selectedItem, ...change }) => {
+						if (selectedItem) setTagsSelected(prev => [...prev, selectedItem])
+						change.inputValue = ''
+						change.isOpen = false
+					}}
+				/>
+			</div>
+			{/* <ErrorList id={form.errorId} errors={form.errors} /> */}
 			<div>
 				{/* <Button form={form.id} variant="destructive" type="reset">
 		 			Reset

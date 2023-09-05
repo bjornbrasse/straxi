@@ -51,6 +51,7 @@ export default function AppLayout() {
 							className="flex w-full flex-row gap-1.5 border-b border-indigo-800 px-4 pt-2 sm:w-48 sm:flex-col"
 						>
 							<NavTab caption="Calendar" iconName="calendar" to="/calendar" />
+							<NavTab caption="Projecten" iconName="mix" to="/projects" />
 							<NavTab caption="Taken" iconName="lightning-bolt" to="/tasks" />
 							<NavTab caption="Gebruikers" iconName="person" to="/contacts" />
 							{/* <NavTab caption="Taken" iconName="tag" to="/tags" /> */}
