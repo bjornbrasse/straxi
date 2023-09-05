@@ -36,65 +36,63 @@ export default function AppLayout() {
 	const { contactId, projectId, taskId } = useParams()
 
 	return (
-		<div className="flex h-full flex-col overflow-y-hidden border-4 border-blue-500">
+		<div className="flex h-full flex-col overflow-y-hidden">
 			<div className="hidden h-12 items-end gap-1 bg-gray-400 sm:flex">
 				{data.tabs.map(tab => (
 					<Tab tab={tab} key={tab.id} />
 				))}
 			</div>
-			<div className="flex flex-1 flex-col sm:flex-row">
-				<div
-					id="tabs"
-					className="flex w-full flex-row gap-1.5 border-b border-indigo-800 px-4 pt-2 sm:w-48 sm:flex-col"
-				>
-					<NavTab
-						caption="Calendar"
-						iconName="calendar"
-						to="/calendar"
-						className={cn({
-							'transform opacity-0 duration-150':
-								contactId || projectId || taskId,
-						})}
-					/>
-					<NavTab
-						caption="Projecten"
-						iconName="mix"
-						to="/projects"
-						className={cn({
-							'transform opacity-0 duration-150': contactId || taskId,
-							'delay-50 -translate-x-14 transform duration-300': projectId,
-						})}
-					/>
-					<NavTab
-						caption="Taken"
-						iconName="lightning-bolt"
-						to="/tasks"
-						className={cn({
-							'transform opacity-0 duration-150': contactId || projectId,
-							'delay-50 -translate-x-[112px] transform duration-300': taskId,
-						})}
-					/>
-					<NavTab
-						caption="Gebruikers"
-						iconName="person"
-						to="/contacts"
-						className={cn({
-							'transform opacity-0 duration-150': projectId || taskId,
-							'delay-50 -translate-x-[168px] transform duration-300': contactId,
-						})}
-					/>
-					<NavTab
-						caption="Vergaderingen"
-						iconName="chat-bubble"
-						to="/meetings"
-						className={cn({
-							'transform opacity-0 duration-150':
-								contactId || projectId || taskId,
-						})}
-					/>
-				</div>
+			<div
+				id="tabs"
+				className="flex w-full flex-row gap-1.5 border-b border-indigo-800 px-4 pt-2 sm:w-48 sm:flex-col"
+			>
+				<NavTab
+					caption="Calendar"
+					iconName="calendar"
+					to="/calendar"
+					className={cn({
+						'transform opacity-0 duration-150':
+							contactId || projectId || taskId,
+					})}
+				/>
+				<NavTab
+					caption="Projecten"
+					iconName="mix"
+					to="/projects"
+					className={cn({
+						'transform opacity-0 duration-150': contactId || taskId,
+						'delay-50 -translate-x-14 transform duration-300': projectId,
+					})}
+				/>
+				<NavTab
+					caption="Taken"
+					iconName="lightning-bolt"
+					to="/tasks"
+					className={cn({
+						'transform opacity-0 duration-150': contactId || projectId,
+						'delay-50 -translate-x-[112px] transform duration-300': taskId,
+					})}
+				/>
+				<NavTab
+					caption="Gebruikers"
+					iconName="person"
+					to="/contacts"
+					className={cn({
+						'transform opacity-0 duration-150': projectId || taskId,
+						'delay-50 -translate-x-[168px] transform duration-300': contactId,
+					})}
+				/>
+				<NavTab
+					caption="Vergaderingen"
+					iconName="chat-bubble"
+					to="/meetings"
+					className={cn({
+						'transform opacity-0 duration-150':
+							contactId || projectId || taskId,
+					})}
+				/>
 			</div>
-			<div className="flex-1 border-4 border-pink-500">
+			<div className="flex-1 overflow-y-hidden">
 				<Outlet />
 			</div>
 		</div>

@@ -31,12 +31,15 @@ export default function ProjectsRoute() {
 	const { projectId } = useParams()
 
 	return (
-		<div className="relative flex h-full flex-col overflow-y-auto border-4 border-green-400">
+		<div className="flex h-full overflow-y-hidden">
 			<ul
-				className={cn('flex flex-1 list-none flex-col gap-1 px-4 pb-16 pt-4', {
-					hidden: projectId,
-					'flex-1': !projectId,
-				})}
+				className={cn(
+					'flex flex-1 list-none flex-col gap-1 overflow-y-auto px-2 pb-16 pt-4',
+					{
+						hidden: projectId,
+						'flex-1': !projectId,
+					},
+				)}
 			>
 				{data.projects
 					.sort((a, b) =>
@@ -46,7 +49,9 @@ export default function ProjectsRoute() {
 						<NavLink
 							to={project.id}
 							className={({ isActive }) =>
-								cn('rounded-md bg-accent p-1', { 'bg-highlight': isActive })
+								cn('rounded-md bg-accent px-2 py-1', {
+									'bg-highlight': isActive,
+								})
 							}
 							key={project.id}
 						>
