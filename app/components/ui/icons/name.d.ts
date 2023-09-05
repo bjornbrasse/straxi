@@ -6,6 +6,7 @@ export type IconName =
 	| "avatar"
 	| "calendar"
 	| "camera"
+	| "caret-sort"
 	| "chat-bubble"
 	| "check"
 	| "clock"

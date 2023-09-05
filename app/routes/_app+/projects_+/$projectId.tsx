@@ -1,9 +1,11 @@
 import { json, type DataFunctionArgs, redirect } from '@remix-run/node'
 import { Form, Link, Outlet, useLoaderData } from '@remix-run/react'
+import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { z } from 'zod'
 import { NavTab } from '#app/components/navtab.tsx'
 import { Button } from '#app/components/ui/button.tsx'
+import { DropdownMenu } from '#app/components/ui/dropdown-menu_new.tsx'
 import { Icon } from '#app/components/ui/icon.tsx'
 import { prisma } from '#app/utils/db.server.ts'
 import { cn, invariantResponse } from '#app/utils/misc.tsx'
@@ -11,7 +13,7 @@ import { cn, invariantResponse } from '#app/utils/misc.tsx'
 export async function loader({ params }: DataFunctionArgs) {
 	const project = await prisma.project.findUnique({
 		where: { id: params.projectId },
-		select: { id: true, name: true },
+		select: { id: true, name: true, followUpDate: true },
 	})
 	invariantResponse(project, 'Project not found', {
 		headers: {
@@ -49,12 +51,12 @@ export default function ProjectRoute() {
 	}, [])
 
 	return (
-		<div className="h-full border-t border-indigo-800">
+		<div className="flex h-full w-full flex-col border-t border-indigo-800">
 			<div
 				className={cn(
 					'absolute -top-12 z-50 ml-[70px] flex gap-1 border-2 border-red-600',
 					{
-						// '-translate-y-[52px] transform duration-500': loaded,
+						'-translate-y-[52px] transform duration-500': loaded,
 					},
 				)}
 			>
@@ -66,33 +68,60 @@ export default function ProjectRoute() {
 					to="appointments"
 				/>
 			</div>
-			<div className="flex items-center justify-between p-4">
-				<h2>{data.project.name}</h2>
+			<div className="flex items-center justify-between bg-gray-100 py-2 pl-4 pr-1">
+				<div className="flex flex-col">
+					<h2>{data.project.name}</h2>
+
+					{data.project.followUpDate ? (
+						<p>`${dayjs(data.project.followUpDate).format("D MMM 'YY")}`</p>
+					) : (
+						<p className="text-blue-700 underline">Kies een opvolgdatum</p>
+					)}
+				</div>
 				<div className="flex gap-1">
-					<Form method="POST">
-						<input type="hidden" name="projectId" value={data.project.id} />
-						<Button
-							name="intent"
-							value="delete"
-							variant="destructive"
-							size="sm"
-						>
-							<Icon name="trash" />
-						</Button>
-					</Form>
 					<Button size="sm" asChild>
 						<Link to="edit">
 							<Icon name="pencil-1" />
 						</Link>
 					</Button>
-					<Button size="sm" asChild>
-						<Link to="/projects">
-							<Icon name="cross-1" />
-						</Link>
-					</Button>
+
+					<DropdownMenu>
+						<DropdownMenu.Trigger asChild>
+							<Button variant="transparent" size="sm">
+								<Icon name="dots-vertical" />
+							</Button>
+						</DropdownMenu.Trigger>
+						<DropdownMenu.Content>
+							<DropdownMenu.Item asChild>
+								<Button size="sm" asChild>
+									<Link to="/projects">
+										<Icon name="cross-1" />
+									</Link>
+								</Button>
+							</DropdownMenu.Item>
+							<DropdownMenu.Item asChild>
+								<Form method="POST">
+									<input
+										type="hidden"
+										name="projectId"
+										value={data.project.id}
+									/>
+									<Button
+										type="submit"
+										name="intent"
+										value="delete"
+										variant="transparent"
+									>
+										<Icon name="trash" />
+										Verwijderen
+									</Button>
+								</Form>
+							</DropdownMenu.Item>
+						</DropdownMenu.Content>
+					</DropdownMenu>
 				</div>
 			</div>
-			<div className="border-2 border-red-600">
+			<div className="flex-1 overflow-y-hidden">
 				<Outlet />
 			</div>
 		</div>

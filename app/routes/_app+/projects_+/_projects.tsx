@@ -15,6 +15,8 @@ import { Icon } from '#app/components/ui/icon.tsx'
 import { requireUserId } from '#app/utils/auth.server.ts'
 import { prisma } from '#app/utils/db.server.ts'
 import { cn } from '#app/utils/misc.tsx'
+import { useState } from 'react'
+import { Input } from '#app/components/ui/input.tsx'
 
 export async function loader({ request }: DataFunctionArgs) {
 	const userId = await requireUserId(request)
@@ -29,19 +31,45 @@ export async function loader({ request }: DataFunctionArgs) {
 export default function ProjectsRoute() {
 	const data = useLoaderData<typeof loader>()
 	const { projectId } = useParams()
+	const [showSearch, setShowSearch] = useState(false)
 
 	if (projectId)
 		return (
-			<div className="relative flex-1">
+			<div className="flex h-full">
 				<Outlet />
 			</div>
 		)
 
 	return (
 		<div className="flex h-full flex-col overflow-y-hidden">
-			<p className="mx-auto py-2 text-xl font-bold text-indigo-900">
-				Projecten
-			</p>
+			<div className="relative flex w-full items-center justify-center py-2">
+				<span className="text-xl font-bold text-indigo-900">Projecten</span>
+				<DropdownMenu>
+					<DropdownMenu.Trigger className="absolute right-12 bg-gray-400 p-1">
+						<Icon name="caret-sort" size="lg" />
+					</DropdownMenu.Trigger>
+					<DropdownMenu.Content align="end">
+						<DropdownMenu.Item>Naam</DropdownMenu.Item>
+						<DropdownMenu.Item>Opvolgdatum</DropdownMenu.Item>
+					</DropdownMenu.Content>
+				</DropdownMenu>
+				<button
+					onClick={() => setShowSearch(v => !v)}
+					className="absolute right-2 bg-gray-400 p-1"
+				>
+					<Icon name="magnifying-glass" size="lg" />
+				</button>
+			</div>
+			<div
+				className={cn(
+					'scale-y-0 border border-blue-500 p-2 transition-transform duration-500 ease-in-out',
+					{
+						'scale-y-100': showSearch,
+					},
+				)}
+			>
+				<Input />
+			</div>
 			<ul
 				className={cn(
 					'flex flex-1 list-none flex-col gap-1 overflow-y-auto px-4 pb-16',
@@ -85,17 +113,18 @@ export default function ProjectsRoute() {
 											onClick={e => {
 												e.stopPropagation()
 											}}
+											asChild
 										>
-											<Dialog>
+											<Dialog open={true} onOpenChange={() => true}>
 												<Dialog.Trigger>Set FollowUp Date</Dialog.Trigger>
 												<Dialog.Content>
-													<DateSelector
+													{/* <DateSelector
 														activeDate={new Date()}
 														date={new Date()}
 														onSelect={function (date: Date): void {
 															throw new Error('Function not implemented.')
 														}}
-													/>
+													/> */}
 												</Dialog.Content>
 											</Dialog>
 										</DropdownMenu.Item>

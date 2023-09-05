@@ -92,7 +92,7 @@ export default function AppLayout() {
 					})}
 				/>
 			</div>
-			<div className="flex-1 overflow-y-hidden">
+			<div className="flex-1 translate-x-0 overflow-y-hidden">
 				<Outlet />
 			</div>
 		</div>
