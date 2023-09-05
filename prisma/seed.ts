@@ -285,14 +285,32 @@ async function seed() {
 
 	const numberOfProjects = 20
 	console.time(`🔥 Created ${numberOfProjects} projects`)
-
 	for (let index = 0; index < numberOfProjects; index++) {
 		await prisma.project.create({
 			data: { name: faker.company.buzzPhrase(), createdById: admin.id },
 		})
 	}
-
 	console.timeEnd(`🔥 Created ${numberOfProjects} projects`)
+
+	const numberOfTasks = 100
+	console.time(`🛠 Created ${numberOfTasks} tasks`)
+	for (let index = 0; index < numberOfTasks; index++) {
+		await prisma.task.create({
+			data: { name: faker.company.buzzPhrase(), createdById: admin.id },
+		})
+	}
+	console.timeEnd(`🛠 Created ${numberOfTasks} tasks`)
+
+	const numberOfContacts = 200
+	console.time(`🛠 Created ${numberOfContacts} contacts`)
+	for (let index = 0; index < numberOfContacts; index++) {
+		const firstName = faker.person.firstName()
+		const lastName = faker.person.lastName()
+		await prisma.contact.create({
+			data: { firstName, lastName, createdById: admin.id },
+		})
+	}
+	console.timeEnd(`🛠 Created ${numberOfContacts} contacts`)
 
 	console.timeEnd(`🌱 Database has been seeded`)
 }

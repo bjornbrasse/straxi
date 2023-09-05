@@ -42,7 +42,7 @@ model Connection {
 model Contact {
   id          String   @id @default(cuid())
   createdAt   DateTime @default(now())
-  createdBy   User     @relation(fields: [createdById], references: [id])
+  createdBy   User     @relation(fields: [createdById], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdById String
   updatedAt   DateTime @updatedAt
 
@@ -68,7 +68,7 @@ model Meeting {
   id          String   @id @default(cuid())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  createdBy   User     @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  createdBy   User     @relation(fields: [createdById], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdById String
 
   name String
@@ -176,7 +176,7 @@ model Project {
 model Task {
   id          String   @id @default(cuid())
   createdAt   DateTime @default(now())
-  createdBy   User     @relation(fields: [createdById], references: [id])
+  createdBy   User     @relation(fields: [createdById], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdById String
   updatedAt   DateTime @updatedAt
 
@@ -204,11 +204,11 @@ model User {
   connections Connection[]
 
   appointmentsCreated Appointment[]
+  contactsCreated     Contact[]
   meetingsCreated     Meeting[]
+  projectsCreated     Project[]
   tagsCreated         Tag[]
   tasksCreated        Task[]
-  contactsCreated     Contact[]
-  projectsCreated     Project[]
 }
 
 model UserImage {

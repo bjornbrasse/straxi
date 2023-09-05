@@ -49,11 +49,14 @@ export default function ProjectRoute() {
 	}, [])
 
 	return (
-		<div className="relative h-full border-t border-indigo-800">
+		<div className="h-full border-t border-indigo-800">
 			<div
-				className={cn('ml-[70px] flex gap-1 border-2 border-red-600', {
-					'-translate-y-[52px] transform duration-500': loaded,
-				})}
+				className={cn(
+					'absolute -top-12 z-50 ml-[70px] flex gap-1 border-2 border-red-600',
+					{
+						// '-translate-y-[52px] transform duration-500': loaded,
+					},
+				)}
 			>
 				<NavTab caption={''} iconName={'arrow-left'} to="test" />
 				<NavTab caption="Taken" iconName="lightning-bolt" to="tasks" />

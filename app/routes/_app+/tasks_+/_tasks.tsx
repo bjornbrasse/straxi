@@ -17,7 +17,7 @@ export default function TasksRoute() {
 	const data = useLoaderData<typeof loader>()
 
 	return (
-		<div className="relative h-full p-4">
+		<div className="relative h-full overflow-y-hidden border-4 border-red-500">
 			<h1>TasksRoute</h1>
 			<div className="flex flex-col gap-1 overflow-y-auto border-4 border-sky-600 p-4">
 				{data.tasks.map(task => (
