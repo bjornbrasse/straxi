@@ -6,17 +6,17 @@ import {
 	useParams,
 	Outlet,
 } from '@remix-run/react'
+import { useRef, useState } from 'react'
 import { promiseHash } from 'remix-utils'
-import { DateSelector } from '#app/components/date-selector.tsx'
+// import { DateSelector } from '#app/components/date-selector.tsx'
 import { Button } from '#app/components/ui/button.tsx'
 import { Dialog } from '#app/components/ui/dialog.tsx'
 import { DropdownMenu } from '#app/components/ui/dropdown-menu_new.tsx'
 import { Icon } from '#app/components/ui/icon.tsx'
+import { Input } from '#app/components/ui/input.tsx'
 import { requireUserId } from '#app/utils/auth.server.ts'
 import { prisma } from '#app/utils/db.server.ts'
 import { cn } from '#app/utils/misc.tsx'
-import { useState } from 'react'
-import { Input } from '#app/components/ui/input.tsx'
 
 export async function loader({ request }: DataFunctionArgs) {
 	const userId = await requireUserId(request)
@@ -32,6 +32,7 @@ export default function ProjectsRoute() {
 	const data = useLoaderData<typeof loader>()
 	const { projectId } = useParams()
 	const [showSearch, setShowSearch] = useState(false)
+	const searchRef = useRef<HTMLInputElement>(null)
 
 	if (projectId)
 		return (
@@ -62,13 +63,13 @@ export default function ProjectsRoute() {
 			</div>
 			<div
 				className={cn(
-					'scale-y-0 border border-blue-500 p-2 transition-transform duration-500 ease-in-out',
+					'h-0 overflow-hidden transition-all duration-500 ease-in-out',
 					{
-						'scale-y-100': showSearch,
+						'h-16 border-y border-blue-500 px-4 pt-3': showSearch,
 					},
 				)}
 			>
-				<Input />
+				<Input ref={searchRef} />
 			</div>
 			<ul
 				className={cn(

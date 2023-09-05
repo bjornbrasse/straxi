@@ -59,9 +59,9 @@ export default function AppLayout() {
 					caption="Projecten"
 					iconName="mix"
 					to="/projects"
-					className={cn({
+					className={cn('transition-transform duration-500 ease-in-out', {
 						'transform opacity-0 duration-500': contactId || taskId,
-						'delay-50 -translate-x-14 transform duration-300': projectId,
+						'delay-50 -translate-x-14': projectId,
 					})}
 				/>
 				<NavTab
