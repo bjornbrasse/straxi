@@ -30,6 +30,7 @@ const TaskSchema = z.object({
 	end: z.coerce.date().optional(),
 	followUp: z.coerce.date().optional(),
 	description: z.string().optional(),
+	projectId: z.string().cuid().optional(),
 })
 
 export async function action({ request }: DataFunctionArgs) {
@@ -61,12 +62,13 @@ export async function action({ request }: DataFunctionArgs) {
 		return json({ status: 'error', submission } as const, { status: 400 })
 	}
 
-	const { id, ...data } = submission.value
+	const { id, projectId, ...data } = submission.value
 
 	const task = await prisma.task.upsert({
 		where: { id: id ?? '__new_task__' },
 		create: {
 			...data,
+			projectTasks: projectId ? { create: { projectId } } : undefined,
 			createdById: userId,
 		},
 		update: {
@@ -82,8 +84,10 @@ export async function action({ request }: DataFunctionArgs) {
 
 export function TaskForm({
 	task,
+	projectId,
 }: {
 	task?: SerializeFrom<Pick<Task, 'id' | 'name' | 'start' | 'end'>>
+	projectId?: string
 }) {
 	const fetcher = useFetcher<typeof action>()
 	const isPending = fetcher.state !== 'idle'
@@ -119,6 +123,7 @@ export function TaskForm({
 				*/}
 			{/* <button type="submit" className="hidden" /> */}
 			{task && <input type="hidden" name="id" value={task.id} />}
+			{projectId && <input type="hidden" name="projectId" value={projectId} />}
 
 			<div className="flex flex-col gap-1">
 				<Label htmlFor="name">Naam:</Label>

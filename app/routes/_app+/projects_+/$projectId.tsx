@@ -54,13 +54,12 @@ export default function ProjectRoute() {
 		<div className="flex h-full w-full flex-col border-t border-indigo-800">
 			<div
 				className={cn(
-					'absolute -top-12 z-50 ml-[70px] flex gap-1 border-2 border-red-600',
+					'absolute top-12 z-50 ml-[70px] flex gap-1 border-2 border-red-600',
 					{
 						'-translate-y-[52px] transform duration-500': loaded,
 					},
 				)}
 			>
-				<NavTab caption={''} iconName={'arrow-left'} to="test" />
 				<NavTab caption="Taken" iconName="lightning-bolt" to="tasks" />
 				<NavTab
 					caption="Gebruikers"
