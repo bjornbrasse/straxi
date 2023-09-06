@@ -31,6 +31,9 @@ const TaskSchema = z.object({
 	followUp: z.coerce.date().optional(),
 	description: z.string().optional(),
 	projectId: z.string().cuid().optional(),
+	redirectTo: z
+		.union([z.string(), z.function().args(z.string()).returns(z.string())])
+		.optional(),
 })
 
 export async function action({ request }: DataFunctionArgs) {
@@ -53,6 +56,10 @@ export async function action({ request }: DataFunctionArgs) {
 		}),
 		async: true,
 	})
+	console.log(
+		'🚀 ~ file: __task-form.tsx:59 ~ action ~ submission:',
+		submission,
+	)
 
 	if (submission.intent !== 'submit') {
 		return json({ status: 'idle', submission } as const)
@@ -62,7 +69,7 @@ export async function action({ request }: DataFunctionArgs) {
 		return json({ status: 'error', submission } as const, { status: 400 })
 	}
 
-	const { id, projectId, ...data } = submission.value
+	const { id, projectId, redirectTo, ...data } = submission.value
 
 	const task = await prisma.task.upsert({
 		where: { id: id ?? '__new_task__' },
@@ -79,15 +86,23 @@ export async function action({ request }: DataFunctionArgs) {
 
 	invariantResponse(task, `Task not ${id ? 'updated' : 'created'}`)
 
-	return redirect(`/tasks/${task.id}`)
+	return redirect(
+		redirectTo
+			? typeof redirectTo === 'function'
+				? redirectTo(task.id)
+				: 'test'
+			: `/tasks/${task.id}`,
+	)
 }
 
 export function TaskForm({
 	task,
 	projectId,
+	redirectTo,
 }: {
 	task?: SerializeFrom<Pick<Task, 'id' | 'name' | 'start' | 'end'>>
 	projectId?: string
+	redirectTo?: 'tasks' | 'project_tasks'
 }) {
 	const fetcher = useFetcher<typeof action>()
 	const isPending = fetcher.state !== 'idle'
@@ -124,7 +139,17 @@ export function TaskForm({
 			{/* <button type="submit" className="hidden" /> */}
 			{task && <input type="hidden" name="id" value={task.id} />}
 			{projectId && <input type="hidden" name="projectId" value={projectId} />}
-
+			{redirectTo && (
+				<input
+					type="hidden"
+					name="redirectTo"
+					value={
+						typeof redirectTo === 'function'
+							? JSON.stringify(redirectTo)
+							: redirectTo
+					}
+				/>
+			)}
 			<div className="flex flex-col gap-1">
 				<Label htmlFor="name">Naam:</Label>
 				<Input id="name" name="name" />

@@ -19,7 +19,7 @@ export default function ProjectTasksRoute() {
 	// const actionData = useActionData<typeof action>()
 
 	return (
-		<div className="flex h-full flex-col">
+		<div className="flex h-full flex-col dark:bg-pink-400">
 			<p className="mx-auto py-2 text-xl font-bold text-indigo-900">Taken</p>
 			<div className="flex flex-1 flex-col gap-2 overflow-y-auto px-2 pb-16">
 				{data.tasks.map(task => (

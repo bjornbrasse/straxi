@@ -22,7 +22,10 @@ export default function ProjectTasksNewRoute() {
 
 	return (
 		<div className="h-full p-8">
-			<TaskForm projectId={data.project.id} />
+			<TaskForm
+				projectId={data.project.id}
+				redirectTo={taskId => `/projects/${data.project.id}/tasks/${taskId}`}
+			/>
 		</div>
 	)
 }
